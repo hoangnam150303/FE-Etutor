@@ -6,7 +6,6 @@ import "@styles/index.css";
 import { Provider } from "react-redux";
 import configStore from "./configs/configureStore";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import GitHubLogin from 'react-github-login';
 const store = configStore();
 
 const clientId = import.meta.env.VITE_CLIENT_ID;

@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { ArrowLeftOutlined, EyeInvisibleOutlined, EyeOutlined, GoogleOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  GoogleOutlined,
+} from "@ant-design/icons";
+import userApi from "../../hooks/useUser";
+import { message } from "antd";
+import constants from "../../constants/constants";
 
 const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -16,6 +24,16 @@ const Register = () => {
   const togglePasswordConfirmVisibility = () => {
     setPasswordConfirmVisible(!passwordConfirmVisible);
   };
+  const onSuccess = async (data) => {
+    try {
+      message.success("OTP sent to your email.");
+      localStorage.setItem(constants.VERIFY_TOKEN, data.verifyToken);
+      navigate("/otp");
+    } catch (error) {
+      message.error("Lỗi đăng nhập.");
+      console.log(error, "error");
+    }
+  };
 
   const initialValues = {
     username: "",
@@ -26,7 +44,9 @@ const Register = () => {
 
   const validationSchema = Yup.object({
     username: Yup.string().required("* Username is required"),
-    email: Yup.string().email("* Invalid email format").required("* Email is required"),
+    email: Yup.string()
+      .email("* Invalid email format")
+      .required("* Email is required"),
     password: Yup.string()
       .min(8, "* Password must be at least 8 characters")
       .required("* Password is required"),
@@ -35,9 +55,13 @@ const Register = () => {
       .required("* Confirm password is required"),
   });
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     console.log("Form submitted:", values);
-    navigate("/"); // Redirect to home
+    // Call API
+    const respone = await userApi.postRegister(values);
+    if (respone.status === 200) {
+      onSuccess(respone.data);
+    }
   };
 
   return (
@@ -56,7 +80,10 @@ const Register = () => {
           {({ isSubmitting }) => (
             <Form>
               <div className="mb-4">
-                <label htmlFor="username" className="mb-1 ml-0.5 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="username"
+                  className="mb-1 ml-0.5 block text-sm font-medium text-gray-700"
+                >
                   Username
                 </label>
                 <Field
@@ -67,12 +94,19 @@ const Register = () => {
                   placeholder="Your username"
                 />
                 <div className="h-2">
-                    <ErrorMessage name="username" component="div" className="ml-0.5 text-red-500 text-sm" />
+                  <ErrorMessage
+                    name="username"
+                    component="div"
+                    className="ml-0.5 text-red-500 text-sm"
+                  />
                 </div>
               </div>
 
               <div className="mb-4">
-                <label htmlFor="email" className="mb-1 ml-0.5 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="mb-1 ml-0.5 block text-sm font-medium text-gray-700"
+                >
                   Email
                 </label>
                 <Field
@@ -83,12 +117,19 @@ const Register = () => {
                   placeholder="Your email"
                 />
                 <div className="h-2">
-                    <ErrorMessage name="email" component="div" className="ml-0.5 text-red-500 text-sm" />
+                  <ErrorMessage
+                    name="email"
+                    component="div"
+                    className="ml-0.5 text-red-500 text-sm"
+                  />
                 </div>
               </div>
 
               <div className="relative mb-4">
-                <label htmlFor="password" className="mb-1 ml-0.5 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="mb-1 ml-0.5 block text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
                 <Field
@@ -110,12 +151,19 @@ const Register = () => {
                   )}
                 </button>
                 <div className="h-2">
-                    <ErrorMessage name="password" component="div" className="ml-0.5 text-red-500 text-sm" />
+                  <ErrorMessage
+                    name="password"
+                    component="div"
+                    className="ml-0.5 text-red-500 text-sm"
+                  />
                 </div>
               </div>
 
               <div className="relative mb-6">
-                <label htmlFor="confirmPassword" className="mb-1 ml-0.5 block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="confirmPassword"
+                  className="mb-1 ml-0.5 block text-sm font-medium text-gray-700"
+                >
                   Confirm Password
                 </label>
                 <Field
@@ -137,7 +185,11 @@ const Register = () => {
                   )}
                 </button>
                 <div className="h-2">
-                    <ErrorMessage name="confirmPassword" component="div" className="ml-0.5 text-red-500 text-sm" />
+                  <ErrorMessage
+                    name="confirmPassword"
+                    component="div"
+                    className="ml-0.5 text-red-500 text-sm"
+                  />
                 </div>
               </div>
 
@@ -153,7 +205,9 @@ const Register = () => {
                   onClick={() => navigate("/")}
                   className="mt-1 ml-1 text-blue-500 hover:text-blue-800 transition duration-200"
                 >
-                  <span className="underline underline-offset-2">Back to Home</span>
+                  <span className="underline underline-offset-2">
+                    Back to Home
+                  </span>
                 </button>
               </div>
             </Form>
