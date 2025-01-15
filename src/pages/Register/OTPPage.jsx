@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import userApi from "../../hooks/useUser";
+import constants from "../../constants/constants";
 
 export default function OTPPage() {
     const [otpError, setOtpError] = useState("");
@@ -13,17 +15,22 @@ export default function OTPPage() {
             .required("Please enter OTP."),
     });
 
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-
-        // // Giả lập kiểm tra OTP (thay thế bằng API thực tế)
-        // const correctOtp = "12345"; // Đây chỉ là ví dụ
-        // if (values.otp !== correctOtp) {
-        //     setOtpError("OTP không đúng, vui lòng thử lại.");
-        // } else {
-        //     alert("OTP hợp lệ! Đăng ký thành công.");
-        //     setOtpError("");
-        // }
+        try {
+            const verifyToken = localStorage.getItem('verify_token');
+            const payload = { ...values, verifyToken };
+            const respone = await userApi.postVerify(payload);
+            if (respone.status === 200) {
+                localStorage.removeItem('verify_token');
+                navigate("/login");
+            }
+            else{
+                setOtpError("OTP is incorrect.");
+            }
+        } catch (error) {
+            
+        }
         setSubmitting(false);
     };
 
