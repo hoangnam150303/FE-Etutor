@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import HomePage from "../pages/HomePage/HomePage";
 
 export default function UserLayout() {
-
     const navigate = useNavigate();
 
     const handleLogin = () => {
@@ -88,6 +88,9 @@ export default function UserLayout() {
                         Login
                     </button>
                 </div>
+            </div>
+            <div>
+                <HomePage />
             </div>
         </header>
     )
