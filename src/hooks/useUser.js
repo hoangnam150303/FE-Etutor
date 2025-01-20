@@ -18,7 +18,19 @@ const userApi = {
     const url = "/login";
     return axiosClient.post(url,account);
   },
+  postRegister: (account) => {
+    const url = "/register";
+    return axiosClient.post(url,account);
+  },
+  postVerify: (data) => {
+    const url = "/approveAccount";
+    return axiosClient.post(url,data);
+  },
 
+  getUser:()=>{
+    const url = "/getUser";
+    return axiosClient.get(url);
+  }
   //   postLoginWithFacebook: (accessToken) => {
   //     const url = LOGIN_API_ENDPOINT + '/fb';
   //     return axiosClient.post(url, accessToken);
