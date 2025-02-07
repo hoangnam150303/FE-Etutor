@@ -9,6 +9,8 @@ import UserPage from '../pages/AdminPage/UserPage';
 import Courses from '../pages/AdminPage/Courses';
 import ClassRegis from '../pages/AdminPage/ClassRegis';
 import Chat from '../pages/AdminPage/Chat';
+import TutorLayout from '../layouts/TutorLayout';
+import ListClass from '../pages/TutorPage/ListClass';
 
 function AppRoutes() {
     return (
@@ -22,6 +24,9 @@ function AppRoutes() {
                 <Route path="courses" element={<Courses />} />
                 <Route path="class-registration" element={<ClassRegis />} />
                 <Route path="chat" element={<Chat />} />
+            </Route>
+            <Route path="tutor" element={<TutorLayout />}>
+                <Route path="" element={<ListClass />} />
             </Route>
         </Routes>
     );
