@@ -1,12 +1,13 @@
-import { AlignLeftOutlined, AreaChartOutlined, BookOutlined, DropboxOutlined, ProductOutlined, ProfileOutlined, RightOutlined, TagsOutlined, UnorderedListOutlined, UserOutlined, UserSwitchOutlined, WalletOutlined, WechatOutlined } from "@ant-design/icons";
+import { AlignLeftOutlined, BookOutlined, RightOutlined, UnorderedListOutlined, UserOutlined, WechatOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import React, { useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import avatarDefault from "../../assets/images/AvatarDefault.png"
 
 export default function AdminHeader({ onToggle, isOpen }) {
 
+    const location = useLocation();
     const Menus = [
         { title: "User", icon: <UserOutlined className='text-2xl' />, path: `/test/user` },
         { title: "Courses", icon: <BookOutlined className='text-2xl' />, path: `/test/courses` },
@@ -59,16 +60,19 @@ export default function AdminHeader({ onToggle, isOpen }) {
                             </div>
                         </div>
                         <ul className='pt-6'>
-                            {Menus.map((menu, index) => (
-                                <NavLink
-                                    key={index}
-                                    to={menu.path}
-                                    className={({ isActive }) => `flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-slate-100 text-indigo-600' : 'text-gray-600'} hover:bg-slate-100 duration-300`}
-                                >
-                                    {menu.icon}
-                                    <span className={`${!isOpen && "scale-0"} origin-left duration-300 text-base font-medium`}>{menu.title}</span>
-                                </NavLink>
-                            ))}
+                            {Menus.map((menu, index) => {
+                                const isActive = location.pathname === menu.path;
+                                return (
+                                    <NavLink
+                                        key={index}
+                                        to={menu.path}
+                                        className={`flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-slate-100 text-indigo-600' : 'text-gray-600'} hover:bg-slate-100 duration-300`}
+                                    >
+                                        {menu.icon}
+                                        <span className={`${!isOpen && "scale-0"} origin-left duration-300 text-base font-medium`}>{menu.title}</span>
+                                    </NavLink>
+                                )
+                            })}
                         </ul>
                     </div>
                 </Drawer>
