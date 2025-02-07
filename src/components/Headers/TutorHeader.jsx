@@ -1,17 +1,18 @@
-import { AlignLeftOutlined, BookOutlined, RightOutlined, UnorderedListOutlined, UserOutlined, WechatOutlined } from "@ant-design/icons";
+import { AlignLeftOutlined, BarsOutlined, HomeOutlined, RightOutlined, TeamOutlined, WechatOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import avatarDefault from "../../assets/images/AvatarDefault.png"
 
-export default function AdminHeader({ onToggle, isOpen }) {
+const TutorHeader = ({ onToggle, isOpen }) => {
 
     const location = useLocation();
+
     const Menus = [
-        { title: "User", icon: <UserOutlined className='text-2xl' />, path: `/test/user` },
-        { title: "Courses", icon: <BookOutlined className='text-2xl' />, path: `/test/courses` },
-        { title: "Class Registration", icon: <UnorderedListOutlined className='text-2xl' />, path: `/test/class-registration` },
+        { title: "Home", icon: <HomeOutlined className='text-2xl' />, path: `/tutor` },
+        { title: "Classes", icon: <BarsOutlined className='text-2xl' />, path: `/tutor/list-classes` },
+        { title: "Students", icon: <TeamOutlined className='text-2xl' />, path: `/tutor/list-students` },
         { title: "Chat", icon: <WechatOutlined className='text-2xl' />, path: `/test/chat` },
     ];
 
@@ -35,16 +36,19 @@ export default function AdminHeader({ onToggle, isOpen }) {
                 </div>
                 <RightOutlined className={`${isOpen && "rotate-180"} absolute text-3xl cursor-pointer -right-4 top-16 w-8 border-2 bg-slate-50 text-slate-500 border-slate-50 rounded-full`} onClick={onToggle} />
                 <ul className='pt-6'>
-                    {Menus.map((menu, index) => (
-                        <NavLink
-                            key={index}
-                            to={menu.path}
-                            className={({ isActive }) => `flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-[#eee5da] text-[#f18966]' : 'text-slate-200'} hover:bg-[#eee5da] duration-300 hover:text-black`}
-                        >
-                            {menu.icon}
-                            <span className={`${!isOpen && "scale-0"} origin-left duration-100 text-base font-medium`}>{menu.title}</span>
-                        </NavLink>
-                    ))}
+                    {Menus.map((item, index) => {
+                        const isActive = location.pathname === item.path;
+                        return (
+                            <NavLink
+                                key={index}
+                                to={item.path}
+                                className={`flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-[#eee5da] text-[#f18966]' : 'text-slate-200'} hover:bg-[#eee5da] duration-300 hover:text-black`}
+                            >
+                                {item.icon}
+                                <span className={`${!isOpen && "scale-0"} origin-left duration-100 text-base font-medium`}>{item.title}</span>
+                            </NavLink>
+                        )
+                    })}
                 </ul>
             </div>
             {/* Tablet - Mobile - Ipad */}
@@ -60,23 +64,22 @@ export default function AdminHeader({ onToggle, isOpen }) {
                             </div>
                         </div>
                         <ul className='pt-6'>
-                            {Menus.map((menu, index) => {
-                                const isActive = location.pathname === menu.path;
-                                return (
-                                    <NavLink
-                                        key={index}
-                                        to={menu.path}
-                                        className={`flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-slate-100 text-indigo-600' : 'text-gray-600'} hover:bg-slate-100 duration-300`}
-                                    >
-                                        {menu.icon}
-                                        <span className={`${!isOpen && "scale-0"} origin-left duration-300 text-base font-medium`}>{menu.title}</span>
-                                    </NavLink>
-                                )
-                            })}
+                            {Menus.map((menu, index) => (
+                                <NavLink
+                                    key={index}
+                                    to={menu.path}
+                                    className={({ isActive }) => `flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-slate-100 text-indigo-600' : 'text-gray-600'} hover:bg-slate-100 duration-300`}
+                                >
+                                    {menu.icon}
+                                    <span className={`${!isOpen && "scale-0"} origin-left duration-300 text-base font-medium`}>{menu.title}</span>
+                                </NavLink>
+                            ))}
                         </ul>
                     </div>
                 </Drawer>
             </div>
         </div>
     );
-}
+};
+
+export default TutorHeader;
