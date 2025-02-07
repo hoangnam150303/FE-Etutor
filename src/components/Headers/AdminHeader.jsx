@@ -5,8 +5,8 @@ import { NavLink, useParams } from "react-router-dom";
 
 import avatarDefault from "../../assets/images/AvatarDefault.png"
 
-export default function AdminHeader({onToggle, isOpen}) {
-    
+export default function AdminHeader({ onToggle, isOpen }) {
+
     const Menus = [
         { title: "User", icon: <UserOutlined className='text-2xl' />, path: `/test/user` },
         { title: "Courses", icon: <BookOutlined className='text-2xl' />, path: `/test/courses` },
@@ -28,7 +28,7 @@ export default function AdminHeader({onToggle, isOpen}) {
             <div className={`${isOpen ? "w-52" : "w-20"} duration-300 relative h-full bg-gradient-to-br from-[#679089] via-[#679079] to-[#679069] hidden lg:block rounded-l-lg`}>
                 <div className="w-64 h-20">
                     <div className="w-3/5 flex justify-between items-center mx-2">
-                        <img src={avatarDefault} 
+                        <img src={avatarDefault}
                             alt="Shop" className={`cursor-pointer duration-500 rounded-full w-16 h-16 my-2`} />
                     </div>
                 </div>
