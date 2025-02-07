@@ -8,7 +8,6 @@ import avatarDefault from "../../assets/images/AvatarDefault.png"
 export default function AdminHeader({ onToggle, isOpen }) {
 
     const location = useLocation();
-
     const Menus = [
         { title: "User", icon: <UserOutlined className='text-2xl' />, path: `/test/user` },
         { title: "Courses", icon: <BookOutlined className='text-2xl' />, path: `/test/courses` },
