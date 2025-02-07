@@ -9,6 +9,7 @@ import UserPage from '../pages/AdminPage/UserPage';
 import Courses from '../pages/AdminPage/Courses';
 import ClassRegis from '../pages/AdminPage/ClassRegis';
 import Chat from '../pages/AdminPage/Chat';
+import UserProfile from '../pages/UsersPage/UserProfile';
 
 function AppRoutes() {
     return (
@@ -23,6 +24,7 @@ function AppRoutes() {
                 <Route path="class-registration" element={<ClassRegis />} />
                 <Route path="chat" element={<Chat />} />
             </Route>
+            <Route path="/userProfile" element={<UserProfile />} />
         </Routes>
     );
 }
