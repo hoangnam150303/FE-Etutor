@@ -18,7 +18,8 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const role = useSelector((state) => state.user.role); // Lấy role từ Redux store
+
+  const role = useSelector((state) => state.user.role);
   // const isAuth = useSelector((state) => state.authenticate.isAuth);
 
   const goHome = () => {
@@ -30,6 +31,7 @@ export default function Login() {
   };
   useEffect(() => {
     if (role) {
+     
       if (role === "Student") {
         navigate("/");
       } else if (role === "Admin") {
@@ -43,6 +45,7 @@ export default function Login() {
   const onLoginSuccess = async (data) => {
     try {
       message.success("Đăng nhập thành công");
+
       localStorage.setItem(constants.ACCESS_TOKEN, data.accessToken);
       await dispatch(getUserRequest());
     } catch (error) {
@@ -50,7 +53,7 @@ export default function Login() {
       console.log(error, "error");
     }
   };
-
+ 
   // Xử lý điều hướng khi `userRole` thay đổi và `isAuth` là true
   //   useEffect(() => {
   //     // if (isAuth && userRole) {

@@ -1,34 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumb, Button, Input, Modal, Select, Table, Upload } from "antd";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import { createStyles } from "antd-style";
 import { Content } from "antd/es/layout/layout";
 import { UploadOutlined } from "@ant-design/icons";
 import Item from "antd/es/list/Item";
 import userApi from "../../hooks/useUser";
-
-const useStyle = createStyles(({ css, token }) => {
-  const { antCls } = token;
-
-  return {
-    customTable: css`
-      ${antCls}-table {
-        ${antCls}-table-container {
-          ${antCls}-table-body,
-          ${antCls}-table-content {
-            scrollbar-width: thin;
-            scrollbar-color: #eaeaea transparent;
-            scrollbar-gutter: stable;
-          }
-        }
-      }
-    `,
-  };
-});
-
 const UserPage = () => {
-  const { styles } = useStyle();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const [users, setUsers] = useState([]);
@@ -65,10 +43,6 @@ const UserPage = () => {
       .string()
       .matches(/^\d+$/, "Phone number must be digits only")
       .required("Phone number is required"),
-    avatar: yup
-      .string()
-      .url("Avatar must be a valid URL")
-      .required("Avatar URL is required"),
   });
 
   const columns = [
@@ -179,46 +153,16 @@ const UserPage = () => {
   return (
     <div>
       <Content className="mx-2 my-7 lg:mx-5">
-        <Breadcrumb className="mb-2 lg:my-5 lg:mx-3 text-base ">
+        <Breadcrumb className="mb-2 text-base">
           <Breadcrumb.Item>Admin</Breadcrumb.Item>
           <Breadcrumb.Item className="text-[#f18966] font-bold">
             User Management 👋🏻
           </Breadcrumb.Item>
         </Breadcrumb>
-        <div className="active-button flex justify-between items-center">
-          <Select
-            defaultValue="All"
-            style={{
-              width: 200,
-            }}
-            onChange={handleChange}
-            options={[
-              {
-                value: "All",
-                label: "All",
-              },
-              {
-                value: "isDeleted",
-                label: "Deleted",
-              },
-              {
-                value: "isActive",
-                label: "Active",
-              },
-              {
-                value: "tutor",
-                label: "Tutor",
-              },
-              {
-                value: "student",
-                label: "Student",
-              },
-            ]}
-            className="mb-2 lg:my-2"
-          />
+        <div className="flex justify-between items-center">
           <Button
-            className="text-green-800 px-4 py-1 rounded-md border border-green-800"
             onClick={showModal}
+            className="text-green-800 px-4 py-1 border border-green-800"
           >
             Create Tutor
           </Button>
@@ -234,107 +178,73 @@ const UserPage = () => {
                 email: "",
                 password: "",
                 phoneNumber: "",
-                avatar: "",
+                avatar: null,
               }}
               validationSchema={validationSchema}
               onSubmit={(values, { resetForm }) => {
-                console.log(values);
-                resetForm();
-                setIsModalOpen(false);
+                console.log("Form submitted:", values);
+                setTimeout(() => {
+                  resetForm();
+                  setIsModalOpen(false);
+                }, 100);
               }}
             >
-              {({ isSubmitting }) => (
-                <Form className="flex flex-col gap-4">
+              {({ isSubmitting, setFieldValue }) => (
+                <FormikForm className="flex flex-col gap-4">
                   <div>
                     <label htmlFor="username">Username</label>
-                    <Field
-                      as={Input}
+                    <Field as={Input} name="username" />
+                    <ErrorMessage
                       name="username"
-                      type="text"
-                      className="border p-2 w-full"
+                      component="div"
+                      className="text-red-500 text-sm"
                     />
-                    <div className="div-error h-2">
-                      <ErrorMessage
-                        name="username"
-                        component="div"
-                        className="text-red-500 text-sm"
-                      />
-                    </div>
                   </div>
                   <div>
                     <label htmlFor="email">Email</label>
-                    <Field
-                      as={Input}
+                    <Field as={Input} name="email" />
+                    <ErrorMessage
                       name="email"
-                      type="email"
-                      className="border p-2 w-full"
+                      component="div"
+                      className="text-red-500 text-sm"
                     />
-                    <div className="div-error h-2">
-                      <ErrorMessage
-                        name="email"
-                        component="div"
-                        className="text-red-500 text-sm"
-                      />
-                    </div>
                   </div>
                   <div>
                     <label htmlFor="password">Password</label>
-                    <Field
-                      as={Input}
+                    <Field as={Input.Password} name="password" />
+                    <ErrorMessage
                       name="password"
-                      type="password"
-                      className="border p-2 w-full"
+                      component="div"
+                      className="text-red-500 text-sm"
                     />
-                    <div className="div-error h-2">
-                      <ErrorMessage
-                        name="password"
-                        component="div"
-                        className="text-red-500 text-sm"
-                      />
-                    </div>
                   </div>
                   <div>
                     <label htmlFor="phoneNumber">Phone Number</label>
-                    <Field
-                      as={Input}
+                    <Field as={Input} name="phoneNumber" />
+                    <ErrorMessage
                       name="phoneNumber"
-                      type="text"
-                      className="border p-2 w-full"
+                      component="div"
+                      className="text-red-500 text-sm"
                     />
-                    <div className="div-error h-2">
-                      <ErrorMessage
-                        name="phoneNumber"
-                        component="div"
-                        className="text-red-500 text-sm"
-                      />
-                    </div>
                   </div>
-                  <div className="">
+                  <div className="flex flex-col">
                     <label htmlFor="avatar">Avatar</label>
-                    <Item
-                      name="upload"
-                      label="Upload"
-                      valuePropName="image"
-                      getValueFromEvent={normFile}
+                    <Upload
+                      beforeUpload={() => false} // Ngăn upload lên server ngay lập tức
+                      onChange={(info) => setFieldValue("avatar", info.file)}
                     >
-                      <Upload
-                        name="image"
-                        listType="picture"
-                        beforeUpload={(file) => {
-                          setFieldValue("image", file);
-                          return false; // Ngăn chặn upload tự động
-                        }}
-                      >
-                        <Button icon={<UploadOutlined />}>
-                          Click to upload
-                        </Button>
-                      </Upload>
-                    </Item>
+                      <Button icon={<UploadOutlined />}>Click to upload</Button>
+                    </Upload>
+                    <ErrorMessage
+                      name="avatar"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
                   </div>
                   <div className="flex justify-end gap-2">
                     <Button
                       onClick={handleCancel}
-                      className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                      className="bg-gray-500 text-white px-4 py-2"
                     >
                       Cancel
                     </Button>
@@ -342,19 +252,18 @@ const UserPage = () => {
                       type="primary"
                       htmlType="submit"
                       disabled={isSubmitting}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                      className="bg-blue-500 text-white px-4 py-2"
                     >
                       {isSubmitting ? "Creating..." : "Create"}
                     </Button>
                   </div>
-                </Form>
+                </FormikForm>
               )}
             </Formik>
           </Modal>
         </div>
         <div className="data-user-table my-2">
           <Table
-            className={styles.customTable}
             columns={columns}
             dataSource={dataSource}
             scroll={{
