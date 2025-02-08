@@ -16,21 +16,36 @@ const userApi = {
 
   postLoginLocal: (account) => {
     const url = "/login";
-    return axiosClient.post(url,account);
+    return axiosClient.post(url, account);
   },
   postRegister: (account) => {
     const url = "/register";
-    return axiosClient.post(url,account);
+    return axiosClient.post(url, account);
   },
   postVerify: (data) => {
     const url = "/approveAccount";
-    return axiosClient.post(url,data);
+    return axiosClient.post(url, data);
   },
 
-  getUser:()=>{
+  getUser: () => {
     const url = "/getUser";
     return axiosClient.get(url);
-  }
+  },
+  getAllUser: (filter) => {
+    const url = `/getAllUser?filter=${filter}`;
+    console.log(url);
+
+    return axiosClient.get(url);
+  },
+
+  postCreateTutor: (data) => {
+    const url = "/createTutor";
+    return axiosClient.post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
   //   postLoginWithFacebook: (accessToken) => {
   //     const url = LOGIN_API_ENDPOINT + '/fb';
   //     return axiosClient.post(url, accessToken);
