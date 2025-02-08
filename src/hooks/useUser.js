@@ -37,6 +37,15 @@ const userApi = {
 
     return axiosClient.get(url);
   },
+
+  postCreateTutor: (data) => {
+    const url = "/createTutor";
+    return axiosClient.post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
   //   postLoginWithFacebook: (accessToken) => {
   //     const url = LOGIN_API_ENDPOINT + '/fb';
   //     return axiosClient.post(url, accessToken);

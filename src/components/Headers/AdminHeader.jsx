@@ -1,12 +1,13 @@
-import { AlignLeftOutlined, AreaChartOutlined, BookOutlined, DropboxOutlined, ProductOutlined, ProfileOutlined, RightOutlined, TagsOutlined, UnorderedListOutlined, UserOutlined, UserSwitchOutlined, WalletOutlined, WechatOutlined } from "@ant-design/icons";
+import { AlignLeftOutlined, BookOutlined, RightOutlined, UnorderedListOutlined, UserOutlined, WechatOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import React, { useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import avatarDefault from "../../assets/images/AvatarDefault.png"
 
-export default function AdminHeader({onToggle, isOpen}) {
-    
+export default function AdminHeader({ onToggle, isOpen }) {
+
+    const location = useLocation();
     const Menus = [
         { title: "User", icon: <UserOutlined className='text-2xl' />, path: `/test/user` },
         { title: "Courses", icon: <BookOutlined className='text-2xl' />, path: `/test/courses` },
@@ -28,7 +29,7 @@ export default function AdminHeader({onToggle, isOpen}) {
             <div className={`${isOpen ? "w-52" : "w-20"} duration-300 relative h-full bg-gradient-to-br from-[#679089] via-[#679079] to-[#679069] hidden lg:block rounded-l-lg`}>
                 <div className="w-64 h-20">
                     <div className="w-3/5 flex justify-between items-center mx-2">
-                        <img src={avatarDefault} 
+                        <img src={avatarDefault}
                             alt="Shop" className={`cursor-pointer duration-500 rounded-full w-16 h-16 my-2`} />
                     </div>
                 </div>
@@ -59,16 +60,19 @@ export default function AdminHeader({onToggle, isOpen}) {
                             </div>
                         </div>
                         <ul className='pt-6'>
-                            {Menus.map((menu, index) => (
-                                <NavLink
-                                    key={index}
-                                    to={menu.path}
-                                    className={({ isActive }) => `flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-slate-100 text-indigo-600' : 'text-gray-600'} hover:bg-slate-100 duration-300`}
-                                >
-                                    {menu.icon}
-                                    <span className={`${!isOpen && "scale-0"} origin-left duration-300 text-base font-medium`}>{menu.title}</span>
-                                </NavLink>
-                            ))}
+                            {Menus.map((menu, index) => {
+                                const isActive = location.pathname === menu.path;
+                                return (
+                                    <NavLink
+                                        key={index}
+                                        to={menu.path}
+                                        className={`flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? 'bg-slate-100 text-indigo-600' : 'text-gray-600'} hover:bg-slate-100 duration-300`}
+                                    >
+                                        {menu.icon}
+                                        <span className={`${!isOpen && "scale-0"} origin-left duration-300 text-base font-medium`}>{menu.title}</span>
+                                    </NavLink>
+                                )
+                            })}
                         </ul>
                     </div>
                 </Drawer>

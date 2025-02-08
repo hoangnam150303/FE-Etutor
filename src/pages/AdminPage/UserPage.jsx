@@ -314,13 +314,16 @@ const UserPage = () => {
                     <Item
                       name="upload"
                       label="Upload"
-                      valuePropName="avatar"
+                      valuePropName="image"
                       getValueFromEvent={normFile}
                     >
                       <Upload
-                        name="avatar"
-                        action="/upload.do"
+                        name="image"
                         listType="picture"
+                        beforeUpload={(file) => {
+                          setFieldValue("image", file);
+                          return false; // Ngăn chặn upload tự động
+                        }}
                       >
                         <Button icon={<UploadOutlined />}>
                           Click to upload

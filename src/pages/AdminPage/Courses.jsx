@@ -38,9 +38,13 @@ const useStyle = createStyles(({ css, token }) => {
   };
 });
 
-const confirm = (e) => {
-  console.log(e);
-  message.success("Click on Yes");
+const confirm = async (id) => {
+  try {
+    const response = await courseApi.postDeleteCourse(id);
+    if (response.status === 200) {
+      message.success("Delete course successfully");
+    }
+  } catch (error) {}
 };
 const cancel = (e) => {
   console.log(e);
@@ -187,7 +191,7 @@ const Courses = () => {
           <Popconfirm
             title="Delete course"
             description="Are you sure to delete this course?"
-            onConfirm={confirm}
+            onConfirm={() => confirm(record.key)}
             onCancel={cancel}
             okText="Yes"
             cancelText="No"

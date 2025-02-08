@@ -25,6 +25,11 @@ const courseApi = {
       },
     });
   },
+
+  postDeleteCourse: (id) => {
+    const url = `${URL_BASE}/deleteCourse/${id}`;
+    return axiosClient.put(url);
+  },
 };
 
 export default courseApi;
