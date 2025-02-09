@@ -31,7 +31,7 @@ const Chat = () => {
   const emojiList = ["😀", "😂", "😍", "😎", "😢", "😡", "👍", "🎉"];
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.id);
-
+  const [newMessage, setNewMessage] = useState("");
   const emojiMenu = (
     <Menu>
       {emojiList.map((emoji, index) => (
@@ -63,31 +63,8 @@ const Chat = () => {
         });
 
         newSocket.on("new-message", (newMessage) => {
-          console.log("Received new message:", newMessage);
-
+          setNewMessage(newMessage);
           // Kiểm tra xem tin nhắn mới có thuộc cuộc trò chuyện hiện tại hay không:
-          if (
-            (newMessage.senderId === receiverId &&
-              newMessage.receiverId === userId) ||
-            (newMessage.senderId === userId &&
-              newMessage.receiverId === receiverId)
-          ) {
-            setSelectedChat((prevChat) => [...prevChat, newMessage]);
-          }
-
-          // Cập nhật danh sách chat nếu cần
-          setChatList((prevChatList) => {
-            const updatedList = prevChatList.map((chat) => {
-              if (
-                chat.receiverId === newMessage.receiverId ||
-                chat.receiverId === newMessage.senderId
-              ) {
-                return { ...chat, lastMessage: newMessage.message };
-              }
-              return chat;
-            });
-            return updatedList;
-          });
         });
       } catch (error) {
         console.error("Error while connecting to socket:", error);
@@ -146,7 +123,7 @@ const Chat = () => {
   useEffect(() => {
     fetchChatList();
     openConversation(receiverId);
-  }, [chatList]);
+  }, [newMessage]);
 
   // Hàm mở cuộc trò chuyện khi click vào một chat
   const openConversation = async (id) => {
