@@ -15,6 +15,8 @@ import ListClass from '../pages/TutorPage/ListClass';
 import HomePageOfTutor from '../pages/TutorPage/HomePageOfTutor';
 import InfoOfClass from '../pages/TutorPage/InfoOfClass';
 import ListStudents from '../pages/TutorPage/ListStudents';
+import UserChat from '../pages/UsersPage/UserChat';
+import TutorChat from '../pages/TutorPage/TutorChat';
 
 
 function AppRoutes() {
@@ -32,12 +34,14 @@ function AppRoutes() {
             </Route>
 
             <Route path="/userProfile" element={<UserProfile />} />
+            <Route path="/userChat" element={<UserChat />} />
 
             <Route path="tutor" element={<TutorLayout />}>
                 <Route path="" element={<HomePageOfTutor />} />
                 <Route path="list-classes" element={<ListClass />} />
                 <Route path="list-classes/:className" element={<InfoOfClass />} />
                 <Route path="list-students" element={<ListStudents />} />
+                <Route path="tutorChat" element={<TutorChat />} />
             </Route>
 
         </Routes>

@@ -23,7 +23,7 @@ const UserProfile = () => {
         <div className="container mx-auto p-4 lg:p-8">
             <Breadcrumb className="mb-6">
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item className="text-[#f5ad95] font-bold">Users</Breadcrumb.Item>
+                <Breadcrumb.Item className="text-[#f5ad95] font-bold">User</Breadcrumb.Item>
                 <Breadcrumb.Item className="text-[#f18966] font-bold">Profile 🙌</Breadcrumb.Item>
             </Breadcrumb>
 
