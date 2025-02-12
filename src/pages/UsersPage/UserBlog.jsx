@@ -1,6 +1,10 @@
-import { Breadcrumb, Select, Input } from "antd";
+import { Breadcrumb, Select, Input, Modal, Button, Form as AntForm } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import { Content } from "antd/es/layout/layout";
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 const { Search } = Input;
 
@@ -65,6 +69,41 @@ const UserBlog = () => {
         console.log(`selected ${value}`);
     };
 
+    const navigate = useNavigate();
+
+    const handleDetailClick = () => {
+        navigate(`/user/blog/:id`);
+    };
+
+    // Tạo Blog
+    const [isModalOpenBlog, setIsModalOpenBlog] = useState(false);
+    const showModalBlog = () => {
+        setIsModalOpenBlog(true);
+    };
+    const handleOkBlog = () => {
+        setIsModalOpenBlog(false);
+    };
+    const handleCancelBlog = () => {
+        setIsModalOpenBlog(false);
+    };
+
+    const handleChange = (value) => {
+        console.log(`selected ${value}`);
+    };
+
+    const validationSchema = Yup.object().shape({
+        title: Yup.string()
+            .min(5, "Title phải có ít nhất 5 ký tự")
+            .max(100, "Title không được quá 100 ký tự")
+            .required("Vui lòng nhập Title"),
+        description: Yup.string()
+            .min(10, "Description phải có ít nhất 10 ký tự")
+            .required("Vui lòng nhập Description"),
+        courseName: Yup.array()
+            .min(1, "Vui lòng chọn ít nhất một khóa học")
+            .required("Vui lòng chọn ít nhất một khóa học"),
+    });
+
     return (
         <div className="">
             <Content className='mx-2 my-7 lg:mx-5'>
@@ -112,6 +151,66 @@ const UserBlog = () => {
                                 ]}
                             />
                         </div>
+                        <div className="top-body-create_blog">
+                            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded duration-500" onClick={showModalBlog}>Create Blog</button>
+                        </div>
+                        <Modal footer={null} title="Create Blog" open={isModalOpenBlog} onOk={handleOkBlog} onCancel={handleCancelBlog} width={750}>
+                            <Formik
+                                initialValues={{ title: "", description: "", courseName: [] }}
+                                validationSchema={validationSchema}
+                                onSubmit={(values, { resetForm }) => {
+                                    console.log("Form data:", values);
+                                    resetForm();
+                                    setIsModalOpenBlog(false);
+                                }}
+                            >
+                                {({ setFieldValue, values, handleSubmit }) => (
+                                    <Form className="space-y-4">
+                                        <div>
+                                            <label className="font-bold">Title</label>
+                                            <Field name="title" as={Input} />
+                                            <ErrorMessage name="title" component="div" className="text-red-500 text-sm" />
+                                        </div>
+
+                                        <div>
+                                            <label className="font-bold">Content</label>
+                                            <Field name="description" as={TextArea} rows={5} />
+                                            <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
+                                        </div>
+
+                                        <div>
+                                            <label className="font-bold">Course name</label>
+                                            <Field name="courseName">
+                                                {({ field, form }) => (
+                                                    <>
+                                                        <Select
+                                                            mode="multiple"
+                                                            style={{ width: "100%" }}
+                                                            onChange={(value) => form.setFieldValue("courseName", value)}
+                                                            value={form.values.courseName}
+                                                            options={[
+                                                                { label: "Tutor 1", value: "tutor1" },
+                                                                { label: "Tutor 2", value: "tutor2" },
+                                                            ]}
+                                                        />
+                                                        {form.errors.courseName && form.touched.courseName ? (
+                                                            <div className="text-red-500 text-sm">{form.errors.courseName}</div>
+                                                        ) : null}
+                                                    </>
+                                                )}
+                                            </Field>
+                                        </div>
+
+
+                                        <div className="flex justify-end">
+                                            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+                                                Submit
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                )}
+                            </Formik>
+                        </Modal>
                     </div>
                     <div className="bottom-body my-5">
                         <div className="list-blog">
@@ -123,7 +222,7 @@ const UserBlog = () => {
                                             <p className="text-gray-600 mb-3 line-clamp-4">{blog.description}</p>
                                             <p className="text-sm text-gray-500 mb-5">Author: <span className="font-semibold text-red-500">{blog.author}</span></p>
                                             <div className="flex justify-end">
-                                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded duration-500">Detail</button>
+                                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded duration-500" onClick={() => handleDetailClick()}>Detail</button>
                                             </div>
                                         </div>
                                     </div>
