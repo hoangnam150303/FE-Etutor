@@ -17,6 +17,7 @@ import InfoOfClass from '../pages/TutorPage/InfoOfClass';
 import ListStudents from '../pages/TutorPage/ListStudents';
 import UserChat from '../pages/UsersPage/UserChat';
 import TutorChat from '../pages/TutorPage/TutorChat';
+import UserBlog from '../pages/UsersPage/UserBlog';
 
 
 function AppRoutes() {
@@ -35,6 +36,7 @@ function AppRoutes() {
 
             <Route path="/userProfile" element={<UserProfile />} />
             <Route path="/userChat" element={<UserChat />} />
+            <Route path="/userBlog" element={<UserBlog />} />
 
             <Route path="tutor" element={<TutorLayout />}>
                 <Route path="" element={<HomePageOfTutor />} />
