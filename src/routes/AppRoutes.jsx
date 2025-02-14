@@ -17,14 +17,20 @@ import InfoOfClass from '../pages/TutorPage/InfoOfClass';
 import ListStudents from '../pages/TutorPage/ListStudents';
 import UserChat from '../pages/UsersPage/UserChat';
 import TutorChat from '../pages/TutorPage/TutorChat';
+
 import ProductsTutor from '../pages/TutorPage/ProductsTutor';
 import DetailsPage from '../pages/TutorPage/DetailTutor';
+
+import UserBlog from '../pages/UsersPage/UserBlog';
+import HomeLayout from '../layouts/HomeLayout';
+import BlogDetail from '../pages/UsersPage/BlogDetail';
+
 
 
 function AppRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<UserLayout />} />
+            <Route path="/" element={<HomeLayout />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/otp" element={<OTPPage />} />
             <Route path="/register" element={<RegisterPage />} />
@@ -35,8 +41,12 @@ function AppRoutes() {
                 <Route path="chat" element={<Chat />} />
             </Route>
 
-            <Route path="/userProfile" element={<UserProfile />} />
-            <Route path="/userChat" element={<UserChat />} />
+            <Route path="user" element={<UserLayout />}>
+                <Route path="profile" element={<UserProfile />} />
+                <Route path="chat" element={<UserChat />} />
+                <Route path="blog" element={<UserBlog />} />
+                <Route path='blog/:id' element={<BlogDetail />} />
+            </Route>
 
             <Route path="tutor" element={<TutorLayout />}>
                 <Route path="" element={<HomePageOfTutor />} />
