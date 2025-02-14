@@ -1,4 +1,4 @@
-import { AlignLeftOutlined, BarsOutlined, HomeOutlined, RightOutlined, TeamOutlined, WechatOutlined } from "@ant-design/icons";
+import { AlignLeftOutlined, BarsOutlined, HomeOutlined, ProductOutlined, RightOutlined, TeamOutlined, WechatOutlined } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
@@ -13,7 +13,8 @@ const TutorHeader = ({ onToggle, isOpen }) => {
         { title: "Home", icon: <HomeOutlined className='text-2xl' />, path: `/tutor` },
         { title: "Classes", icon: <BarsOutlined className='text-2xl' />, path: `/tutor/list-classes` },
         { title: "Students", icon: <TeamOutlined className='text-2xl' />, path: `/tutor/list-students` },
-        { title: "Chat", icon: <WechatOutlined className='text-2xl' />, path: `/test/chat` },
+        { title: "Chat", icon: <WechatOutlined className='text-2xl' />, path: `/tutor/tutorChat` },
+        { title: "Products", icon: <ProductOutlined className='text-2xl' />, path: `/tutor/products` },
     ];
 
     // Tablet - Mobile - Ipad
