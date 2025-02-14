@@ -58,6 +58,8 @@ function AppRoutes() {
             </Route>
 
             <Route path="/details/:id" element={<DetailsPage />} />
+
+
         </Routes>
     );
 }

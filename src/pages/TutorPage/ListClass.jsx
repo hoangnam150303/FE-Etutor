@@ -30,12 +30,12 @@ const ListClass = () => {
                             bordered={true}
                             className="shadow-lg rounded-lg"
                             actions={[
-                                <Button 
-                                    type="primary" 
+                                <Button
+                                    type="primary"
                                     onClick={() => navigate(`/tutor/list-classes/${item.className}`)}
                                 >
                                     View
-                                </Button> 
+                                </Button>
                             ]}
                         >
                             <p className="text-gray-700"><strong>Student:</strong> {item.studentName}</p>
