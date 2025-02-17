@@ -10,6 +10,7 @@ export default function UserLayout() {
         setIsSidebarOpen((prev) => !prev);
     };
 
+    
     return (
         <div className="m-2 rounded-lg font-cairoRegular flex flex-col lg:flex-row bg-gradient-to-br from-[#e6dbcd] via-[#eee5da] to-transparent">
             <UserHeader onToggle={handleToggleSidebar} isOpen={isSidebarOpen} />
