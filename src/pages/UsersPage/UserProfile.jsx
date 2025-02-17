@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Breadcrumb, Card, Button, List, Radio, Progress, Input, Modal } from 'antd';
 import { GlobalOutlined, GithubOutlined, InstagramOutlined, FacebookOutlined } from '@ant-design/icons';
 
 const UserProfile = () => {
-
-
-    // Khởi tạo useNavigate
-    const navigate = useNavigate();
-
-    // Hàm chuyển hướng
-    const goToListClass = () => {
-        navigate('/tutor/list-classes');
-    };
-
     const [userData, setUserData] = useState({
         fullName: 'John Doe',
         email: 'john.doe@example.com',
@@ -34,7 +23,7 @@ const UserProfile = () => {
         <div className="container mx-auto p-4 lg:p-8">
             <Breadcrumb className="mb-6">
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item className="text-[#f5ad95] font-bold">User</Breadcrumb.Item>
+                <Breadcrumb.Item className="text-[#f5ad95] font-bold">Users</Breadcrumb.Item>
                 <Breadcrumb.Item className="text-[#f18966] font-bold">Profile 🙌</Breadcrumb.Item>
             </Breadcrumb>
 
@@ -46,7 +35,7 @@ const UserProfile = () => {
                         <p className="text-gray-600">Full Stack Developer</p>
                         <p className="text-gray-400 text-sm">Bay Area, San Francisco, CA</p>
                         <div className="mt-4 flex justify-center gap-3">
-                            <Button type="primary" onClick={goToListClass}>List Class</Button>
+                            <Button type="primary">Follow</Button>
                             <Button type="default">Message</Button>
                         </div>
                     </Card>
