@@ -15,11 +15,8 @@ import ListClass from "../pages/TutorPage/ListClass";
 import HomePageOfTutor from "../pages/TutorPage/HomePageOfTutor";
 import InfoOfClass from "../pages/TutorPage/InfoOfClass";
 import ListStudents from "../pages/TutorPage/ListStudents";
-import UserChat from "../pages/UsersPage/userChat";
-
+import UserChat from "../pages/UsersPage/UserChat";
 import TutorChat from "../pages/TutorPage/TutorChat";
-import ProductsTutor from "../pages/TutorPage/ProductsTutor";
-import DetailsPage from "../pages/TutorPage/DetailTutor";
 import UserBlog from "../pages/UsersPage/UserBlog";
 import HomeLayout from "../layouts/HomeLayout";
 import BlogDetail from "../pages/UsersPage/BlogDetail";
@@ -48,13 +45,10 @@ function AppRoutes() {
       <Route path="tutor" element={<TutorLayout />}>
         <Route path="" element={<HomePageOfTutor />} />
         <Route path="list-classes" element={<ListClass />} />
-        <Route path="list-classes/:id" element={<InfoOfClass />} />
+        <Route path="list-classes/:className" element={<InfoOfClass />} />
         <Route path="list-students" element={<ListStudents />} />
         <Route path="tutorChat" element={<TutorChat />} />
-        <Route path="products" element={<ProductsTutor />} />
       </Route>
-
-      <Route path="/details/:id" element={<DetailsPage />} />
     </Routes>
   );
 }
