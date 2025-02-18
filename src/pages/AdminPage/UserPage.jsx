@@ -12,8 +12,13 @@ const UserPage = () => {
   const [users, setUsers] = useState([]);
   const fetchUsers = async (filter) => {
     const response = await userApi.getAllUser(filter);
-
     setUsers(response.data);
+  };
+  const handleStatus = async (id, status) => {
+    const response = await userApi.updateStatusUser(id, { status });
+    if (response.status === 200) {
+      fetchUsers(filter);
+    }
   };
   useEffect(() => {
     fetchUsers(filter);
@@ -81,12 +86,6 @@ const UserPage = () => {
       fixed: "left",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      width: 150,
-    },
-    {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
@@ -97,16 +96,12 @@ const UserPage = () => {
       dataIndex: "role",
       key: "role",
       width: 100,
-      filters: [
-        {
-          text: "Student",
-          value: "student",
-        },
-        {
-          text: "Tutor",
-          value: "tutor",
-        },
-      ],
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      width: 100,
     },
     {
       title: "Last Login",
@@ -119,14 +114,23 @@ const UserPage = () => {
       key: "operation",
       fixed: "right",
       width: 100,
-      render: () => (
+      render: (record) => (
         <div>
-          <button className="text-white bg-red-500 px-2 py-1 rounded-md mb-2">
-            Block
-          </button>
-          <button className="text-white bg-green-500 px-2 py-1 rounded-md">
-            Unblock
-          </button>
+          {record.status ? (
+            <button
+              className="text-white bg-red-500 px-2 py-1 rounded-md mb-2"
+              onClick={() => handleStatus(record.key, false)}
+            >
+              Block
+            </button>
+          ) : (
+            <button
+              className="text-white bg-green-500 px-2 py-1 rounded-md"
+              onClick={() => handleStatus(record.key, true)}
+            >
+              Unblock
+            </button>
+          )}
         </div>
       ),
     },
@@ -140,7 +144,7 @@ const UserPage = () => {
     avatar: user.avatar,
     role: user.role,
     lastLogin: user.lastLogin,
-    address: `London, Park Lane no. ${i}`,
+    status: user.status,
   }));
 
   const normFile = (e) => {
@@ -159,6 +163,7 @@ const UserPage = () => {
             User Management 👋🏻
           </Breadcrumb.Item>
         </Breadcrumb>
+
         <div className="flex justify-between items-center">
           <Button
             onClick={showModal}
@@ -166,6 +171,36 @@ const UserPage = () => {
           >
             Create Tutor
           </Button>
+          <Select
+            defaultValue="all"
+            style={{
+              width: 200,
+            }}
+            onChange={handleChange}
+            options={[
+              {
+                value: "all",
+                label: "All",
+              },
+              {
+                value: "student",
+                label: "Student",
+              },
+              {
+                value: "tutor",
+                label: "Tutor",
+              },
+              {
+                value: "block",
+                label: "Block",
+              },
+              {
+                value: "unBlock",
+                label: "Unblock",
+              },
+            ]}
+            className=""
+          />
           <Modal
             title="New Tutor"
             open={isModalOpen}
@@ -181,8 +216,11 @@ const UserPage = () => {
                 avatar: null,
               }}
               validationSchema={validationSchema}
-              onSubmit={(values, { resetForm }) => {
-                console.log("Form submitted:", values);
+              onSubmit={async (values, { resetForm }) => {
+                const response = await userApi.postCreateTutor(values);
+                if (response.status === 200) {
+                  console.log(response.data);
+                }
                 setTimeout(() => {
                   resetForm();
                   setIsModalOpen(false);

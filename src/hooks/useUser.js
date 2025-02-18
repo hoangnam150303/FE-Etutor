@@ -46,6 +46,13 @@ const userApi = {
       },
     });
   },
+
+  updateStatusUser: (id, data) => {
+    console.log(data);
+    
+    const url = `/updateStatusUser/${id}`;
+    return axiosClient.put(url, data);
+  },
   //   postLoginWithFacebook: (accessToken) => {
   //     const url = LOGIN_API_ENDPOINT + '/fb';
   //     return axiosClient.post(url, accessToken);

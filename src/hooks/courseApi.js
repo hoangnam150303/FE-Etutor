@@ -30,6 +30,11 @@ const courseApi = {
     const url = `${URL_BASE}/deleteCourse/${id}`;
     return axiosClient.put(url);
   },
+
+  getDetailCourse: (id) => {
+    const url = `${URL_BASE}/getDetailCourse/${id}`;
+    return axiosClient.get(url);
+  }
 };
 
 export default courseApi;
