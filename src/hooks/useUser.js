@@ -33,8 +33,6 @@ const userApi = {
   },
   getAllUser: (filter) => {
     const url = `/getAllUser?filter=${filter}`;
-    console.log(url);
-
     return axiosClient.get(url);
   },
 
