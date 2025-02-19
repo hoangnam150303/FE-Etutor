@@ -1,5 +1,5 @@
 import React from "react";
-import questionImage from "../assets/images/question-A.webp";
+import questionImage from "../../assets/images/question-A.webp";
 import { Collapse } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 

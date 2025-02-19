@@ -1,11 +1,11 @@
 import React from "react";
-import banner2 from "../assets/images/banner-2.webp";
-import number1 from "../assets/images/number-1.webp";
-import number2 from "../assets/images/number-2.webp";
-import number3 from "../assets/images/number-3.webp";
-import number4 from "../assets/images/number-4.webp";
-import number5 from "../assets/images/number-5.webp";
-import number6 from "../assets/images/number-6.webp";
+import banner2 from "../../assets/images/banner-2.webp";
+import number1 from "../../assets/images/number-1.webp";
+import number2 from "../../assets/images/number-2.webp";
+import number3 from "../../assets/images/number-3.webp";
+import number4 from "../../assets/images/number-4.webp";
+import number5 from "../../assets/images/number-5.webp";
+import number6 from "../../assets/images/number-6.webp";
 
 const process = [
     {

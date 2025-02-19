@@ -1,6 +1,6 @@
 import React from "react";
-import basicImage from "../assets/images/BasicQualifications.webp";
-import advancedImage from "../assets/images/AdvancedQualifications.webp";
+import basicImage from "../../assets/images/BasicQualifications.webp";
+import advancedImage from "../../assets/images/AdvancedQualifications.webp";
 import { ArrowRightOutlined, CheckCircleTwoTone } from "@ant-design/icons";
 
 const supported = [
