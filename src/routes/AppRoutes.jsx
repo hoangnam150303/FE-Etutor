@@ -20,11 +20,13 @@ import TutorChat from "../pages/TutorPage/TutorChat";
 import UserBlog from "../pages/UsersPage/UserBlog";
 import HomeLayout from "../layouts/HomeLayout";
 import BlogDetail from "../pages/UsersPage/BlogDetail";
+import CoursePage from "../pages/CoursePage/CoursePage";
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomeLayout />} />
+      <Route path="/khoa-hoc" element={<CoursePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/otp" element={<OTPPage />} />
       <Route path="/register" element={<RegisterPage />} />
