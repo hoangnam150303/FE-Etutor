@@ -1,10 +1,10 @@
 import React from "react";
-import primaryImage from "../assets/images/primary.png";
-import secondaryImage from "../assets/images/secondary.webp";
-import highschoolImage from "../assets/images/highschool.webp";
-import languageImage from "../assets/images/language.webp";
-import computerImage from "../assets/images/computer.webp";
-import aptitudeImage from "../assets/images/aptitude.webp";
+import primaryImage from "../../assets/images/primary.png";
+import secondaryImage from "../../assets/images/secondary.webp";
+import highschoolImage from "../../assets/images/highschool.webp";
+import languageImage from "../../assets/images/language.webp";
+import computerImage from "../../assets/images/computer.webp";
+import aptitudeImage from "../../assets/images/aptitude.webp";
 import { CheckCircleTwoTone, ArrowRightOutlined } from "@ant-design/icons";
 
 const services = [

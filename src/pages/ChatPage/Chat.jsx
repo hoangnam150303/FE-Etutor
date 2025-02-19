@@ -1,5 +1,5 @@
+import React, { useEffect, useRef, useState } from "react";
 import { Breadcrumb, Button, Dropdown, Input, Menu, Avatar } from "antd";
-import { Content } from "antd/es/layout/layout";
 import {
   MenuOutlined,
   PhoneOutlined,
@@ -12,26 +12,30 @@ import {
   PaperClipOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useRef, useState } from "react";
-import chatApi from "../../hooks/chatApi";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserRequest } from "../../reducers/user";
-import { io } from "socket.io-client";
-const TutorChat = () => {
+import { io } from "socket.io-client"; // không cần thiết nữa nếu dùng SocketContext
+import callApi from "../../hooks/callApi";
+import { useNavigate } from "react-router-dom";
+import { useSocket } from "../../context/SocketContext"; // import hook từ SocketContext
+import chatApi from "../../hooks/chatApi";
+
+const Chat = () => {
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
-
   const fileInputRef = useRef(null);
   const [selectedChat, setSelectedChat] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [chatList, setChatList] = useState([]);
   const [receiverId, setReceiverId] = useState(null);
-  const [socket, setSocket] = useState(null);
-  const emojiList = ["😀", "😂", "😍", "😎", "😢", "😡", "👍", "🎉"];
+  const [newMessage, setNewMessage] = useState("");
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.id);
-  const [newMessage, setNewMessage] = useState("");
+  // Sử dụng socket từ SocketContext (đã được khởi tạo toàn cục)
+  const socket = useSocket();
+
+  const emojiList = ["😀", "😂", "😍", "😎", "😢", "😡", "👍", "🎉"];
   const emojiMenu = (
     <Menu>
       {emojiList.map((emoji, index) => (
@@ -41,79 +45,60 @@ const TutorChat = () => {
       ))}
     </Menu>
   );
+
   useEffect(() => {
     dispatch(getUserRequest());
 
-    if (userId) {
-      connectSocket();
-    }
-
-    // Ngắt kết nối socket khi component unmount hoặc userId thay đổi
-    return () => {
-      disconnectSocket();
-    };
-  }, [userId, dispatch]);
-
-  // Hàm kết nối socket
-  const connectSocket = async () => {
-    if (!socket) {
-      try {
-        const newSocket = io(import.meta.env.VITE_API_BASE_URL, {
-          query: { userId: userId },
-        });
-
-        newSocket.on("new-message", (newMessage) => {
-          setNewMessage(newMessage);
-          // Kiểm tra xem tin nhắn mới có thuộc cuộc trò chuyện hiện tại hay không:
-        });
-      } catch (error) {
-        console.error("Error while connecting to socket:", error);
-      }
-    }
-  };
-
-  // Hàm ngắt kết nối socket
-  const disconnectSocket = () => {
+    // Lắng nghe các sự kiện socket
     if (socket) {
-      socket.disconnect();
-      setSocket(null);
-      console.log("Socket disconnected");
+      socket.on("new-message", (msg) => {
+        setNewMessage(msg);
+        // Kiểm tra và cập nhật tin nhắn nếu tin nhắn thuộc cuộc trò chuyện hiện tại
+      });
     }
-  };
+
+    // Cleanup sự kiện khi component unmount
+    return () => {
+      if (socket) {
+        socket.off("new-message");
+        socket.off("new-call");
+      }
+    };
+  }, [socket, dispatch]);
 
   // Hàm gửi tin nhắn
   const sendMessage = async () => {
     if (!message.trim()) return;
-
     try {
-      // Gửi tin nhắn tới backend
-      await chatApi.sendMessage({ message: message }, receiverId);
+      // Gửi tin nhắn tới backend qua API
+      await chatApi.sendMessage({ message }, receiverId);
 
-      // Cập nhật state ngay lập tức với tin nhắn vừa gửi
-      const newMessage = {
+      // Cập nhật tin nhắn vào state
+      const newMsg = {
         senderId: userId,
         receiverId: receiverId,
         message: message,
         timestamp: new Date().toISOString(),
       };
-      setSelectedChat((prevChat) => [...prevChat, newMessage]);
+      setSelectedChat((prevChat) => [...(prevChat || []), newMsg]);
 
-      // Gửi tin nhắn qua WebSocket
+      // Gửi tin nhắn qua socket
       if (socket) {
-        socket.emit("new-message", newMessage);
+        socket.emit("new-message", newMsg);
       }
 
-      // Reset input
       setMessage("");
       setFile(null);
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
+
   // Hàm lấy danh sách chat
   const fetchChatList = async () => {
     try {
       const response = await chatApi.getAllChat();
+
       setChatList(response.data);
     } catch (error) {
       console.error("Error fetching chat list:", error);
@@ -122,15 +107,22 @@ const TutorChat = () => {
 
   useEffect(() => {
     fetchChatList();
-    openConversation(receiverId);
+    if (receiverId) {
+      openConversation(receiverId);
+    }
   }, [newMessage]);
 
   // Hàm mở cuộc trò chuyện khi click vào một chat
   const openConversation = async (id) => {
-    const response = await chatApi.getMessage(id);
-    setReceiverId(id);
-    setSelectedChat(response.data);
+    try {
+      const response = await chatApi.getMessage(id);
+      setReceiverId(id);
+      setSelectedChat(response.data);
+    } catch (error) {
+      console.error("Error opening conversation:", error);
+    }
   };
+
   const handleFileClick = () => {
     fileInputRef.current.click();
   };
@@ -162,7 +154,7 @@ const TutorChat = () => {
       </Breadcrumb>
 
       <div className="flex flex-1 h-full rounded-md relative">
-        {/* Sidebar - Hidden on Small Screens */}
+        {/* Sidebar */}
         <div
           className={`fixed inset-y-0 left-0 z-50 bg-white w-3/4 max-w-xs p-4 transition-transform ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -226,7 +218,6 @@ const TutorChat = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <PhoneOutlined />
                   <SearchOutlined />
                   <HeartOutlined />
                   <BellOutlined />
@@ -293,7 +284,8 @@ const TutorChat = () => {
                 <Button
                   type="primary"
                   shape="circle"
-                  icon={<SendOutlined onClick={() => sendMessage()} />}
+                  icon={<SendOutlined />}
+                  onClick={sendMessage}
                 />
               </div>
             </>
@@ -316,4 +308,4 @@ const TutorChat = () => {
   );
 };
 
-export default TutorChat;
+export default Chat;
