@@ -16,28 +16,22 @@ const HomeHeader = () => {
     <div className="">
       <div className="container mx-auto flex justify-between items-center py-4 px-6">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
+        <a href="/" className="flex items-center space-x-1">
           <div className="text-red-500 text-3xl font-bold">e</div>
           <div className="text-blue-800 text-xl font-bold">tutor</div>
-          <div className="text-sm text-gray-500 italic">
-            Nâng tầm dịch vụ gia sư
-          </div>
-        </div>
+        </a>
 
         {/* Navigation */}
         <nav className="flex space-x-6 text-lg font-medium text-blue-800">
           <a href="/" className="hover:text-red-500">
-            TRANG CHỦ
+            Home
           </a>
-          <a href="/gioi-thieu" className="hover:text-red-500">
-            GIỚI THIỆU
-          </a>
-          <div className="relative group">
+          {/* <div className="relative group">
             <a href="/dich-vu" className="hover:text-red-500 flex items-center">
               DỊCH VỤ
               <span className="ml-1">▼</span>
             </a>
-            {/* Dropdown */}
+            
             <div className="absolute left-0 top-full hidden group-hover:block bg-white border mt-1 shadow-lg z-10">
               <a
                 href="/dich-vu/1"
@@ -52,21 +46,15 @@ const HomeHeader = () => {
                 Dịch Vụ 2
               </a>
             </div>
-          </div>
+          </div> */}
           <a href="/courses" className="hover:text-red-500">
-            KHOÁ HỌC
+            Courses
           </a>
-          <a href="/blog" className="hover:text-red-500">
-            BLOG
-          </a>
-          <a href="/tuyen-dung" className="hover:text-red-500 relative">
-            TUYỂN DỤNG
+          <a href="/blog" className="hover:text-red-500 relative">
+            Blog
             <span className="absolute top-0 -right-6 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
               HOT
             </span>
-          </a>
-          <a href="/lien-he" className="hover:text-red-500">
-            LIÊN HỆ
           </a>
         </nav>
 
