@@ -53,11 +53,11 @@ const HomeHeader = () => {
               </a>
             </div>
           </div>
-          <a href="/bang-gia" className="hover:text-red-500">
-            BẢNG GIÁ
+          <a href="/courses" className="hover:text-red-500">
+            KHOÁ HỌC
           </a>
-          <a href="/tin-tuc" className="hover:text-red-500">
-            TIN TỨC
+          <a href="/blog" className="hover:text-red-500">
+            BLOG
           </a>
           <a href="/tuyen-dung" className="hover:text-red-500 relative">
             TUYỂN DỤNG

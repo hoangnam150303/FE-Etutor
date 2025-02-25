@@ -6,8 +6,10 @@ import { Outlet } from "react-router-dom";
 
 export default function HomeLayout() {
   return (
-    <div className="bg-white shadow">
-      <HomeHeader />
+    <div className="bg-white">
+      <div className="shadow">
+        <HomeHeader />  
+      </div>
       <div>
         {/* <HomePage /> */}
         <Outlet />
