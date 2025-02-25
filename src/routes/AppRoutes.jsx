@@ -22,13 +22,15 @@ import CoursePage from "../pages/CoursePage/CoursePage";
 import { CallPage } from "../pages/CallPage/CallPage";
 import Chat from "../pages/ChatPage/Chat";
 import HomePage from "../pages/HomePage/HomePage";
+import BlogPage from "../pages/BlogPage/BlogPage";
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<HomeLayout />} >
         <Route path='' element={<HomePage />} />
-        <Route path="/bang-gia" element={<CoursePage />} />
+        <Route path="/courses" element={<CoursePage />} />
+        <Route path="/blog" element={<BlogPage />} />
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
