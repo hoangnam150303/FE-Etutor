@@ -18,7 +18,6 @@ const HomePage = () => {
             <TestimonialPage />
             <Question />
             <Post />
-            <Footer />
         </div>
     );
 };

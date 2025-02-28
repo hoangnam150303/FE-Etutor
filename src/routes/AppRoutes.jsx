@@ -23,6 +23,7 @@ import { CallPage } from "../pages/CallPage/CallPage";
 import Chat from "../pages/ChatPage/Chat";
 import HomePage from "../pages/HomePage/HomePage";
 import BlogPage from "../pages/BlogPage/BlogPage";
+import BlogDetailOfHome from "../pages/BlogPage/BlogDetailOfHome";
 
 function AppRoutes() {
   return (
@@ -31,6 +32,7 @@ function AppRoutes() {
         <Route path='' element={<HomePage />} />
         <Route path="/courses" element={<CoursePage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetailOfHome />} />
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
