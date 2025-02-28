@@ -3,6 +3,7 @@ import HomeHeader from "../components/Headers/HomeHeader";
 import HomePage from "../pages/HomePage/HomePage";
 
 import { Outlet } from "react-router-dom";
+import Footer from "../components/HomePage/Footer";
 
 export default function HomeLayout() {
   return (
@@ -14,6 +15,7 @@ export default function HomeLayout() {
         {/* <HomePage /> */}
         <Outlet />
       </div>
+      <Footer />
     </div>
   );
 }
