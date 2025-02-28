@@ -1,56 +1,67 @@
 import React from "react";
-import primaryImage from "../../assets/images/primary.png";
-import secondaryImage from "../../assets/images/secondary.webp";
-import highschoolImage from "../../assets/images/highschool.webp";
-import languageImage from "../../assets/images/language.webp";
-import computerImage from "../../assets/images/computer.webp";
-import aptitudeImage from "../../assets/images/aptitude.webp";
+import reactImage from "../../assets/images/React.png";
+import ItImage from "../../assets/images/Languages.png";
+import JsImage from "../../assets/images/javascript.jpg";
+import HtmlImage from "../../assets/images/Html-Css.png";
+import NodeImage from "../../assets/images/Node-ExpressJS.png";
+import CImage from "../../assets/images/C++.png";
 import { CheckCircleTwoTone, ArrowRightOutlined } from "@ant-design/icons";
 
 const services = [
     {
-        id: 1,
-        title: "GIA SƯ TIỂU HỌC",
-        image: primaryImage,
+        id: 11,
+        title: "Kiến thức nhập môn IT",
+        image: ItImage,
         details: [
-            "Gia sư lớp 1, lớp 2, lớp 3, lớp 4, lớp 5",
-            "Gia sư tiền tiểu học, luyện chữ đẹp",
+            "Các kiến thức cơ bản, nền móng của ngành IT",
+            "Các mô hình, kiến trúc cơ bản khi triển khai ứng dụng"
         ],
     },
     {
         id: 2,
-        title: "GIA SƯ THCS",
-        image: secondaryImage,
-        details: ["Gia sư lớp 6, lớp 7, lớp 8, lớp 9", "Luyện thi chuyển cấp lên lớp 10"],
+        title: "Xây dựng Website với ReactJS",
+        image: reactImage,
+        details: [
+            "Biết cách tối ưu hiệu năng ứng dụng",
+            "Triển khai dự án React ra Internet",
+            "Đủ hành trang tự tin apply đi xin việc"
+        ],
     },
     {
         id: 3,
-        title: "GIA SƯ THPT",
-        image: highschoolImage,
-        details: ["Gia sư lớp 10, lớp 11, lớp 12", "Luyện thi tốt nghiệp THPT và đại học"],
+        title: "Lập trình JAVASCRIPT",
+        image: JsImage,
+        details: [
+            "Các kiến thức của Javascript giúp code trở nên tối ưu hơn",
+            "Hiểu được cách tư duy nâng cao của các lập trình viên có kinh nghiệm"
+        ],
     },
     {
         id: 4,
-        title: "GIA SƯ NGOẠI NGỮ",
-        image: languageImage,
+        title: "HTML CSS từ Zero đến Hero",
+        image: HtmlImage,
         details: [
-            "Gia sư tiếng Anh, tiếng Nhật, tiếng Trung",
-            "Dạy tiếng Việt cho người nước ngoài",
+            "Biết cách xây dựng giao diện web với HTML, CSS",
+            "Biết cách đặt tên class CSS theo chuẩn BEM",
+            "Làm chủ Flexbox khi dựng bố cục website"
         ],
     },
     {
         id: 5,
-        title: "GIA SƯ TIN HỌC",
-        image: computerImage,
-        details: ["Học tin học cơ bản, lập trình", "Chứng chỉ MOS, IC3"],
+        title: "NODEJS & EXPERSSJS",
+        image: NodeImage,
+        details: [
+            "Nắm chắc lý thuyết chung trong việc xây dựng web",
+            "Xây dựng web với Express bằng kiến thức thực tế"
+        ],
     },
     {
         id: 6,
-        title: "GIA SƯ NĂNG KHIẾU",
-        image: aptitudeImage,
+        title: "Lập trình C++ cơ bản, nâng cao",
+        image: CImage,
         details: [
-            "Gia sư nhạc cụ: Piano, Violin, Guitar",
-            "Luyện tập và sáng tạo nghệ thuật",
+            "Nắm được các khái niệm căn cơ của lập trình",
+            "Nền tảng vững chắc để chinh phục con đường trở thành một lập trình viên",
         ],
     },
 ];
@@ -81,7 +92,7 @@ const ServiceCard = ({ title, image, details }) => (
 const Services = () => (
     <div className="container mx-auto">
         <h2 className="text-center text-2xl sm:text-xl lg:text-4xl font-bold mb-6">
-            DỊCH VỤ GIA SƯ ĐƯỢC ĐÁNH GIÁ TỐT NHẤT TẠI ĐÀ NẴNG
+            KHÓA HỌC ĐƯỢC ĐÁNH GIÁ TỐT NHẤT TẠI ĐÀ NẴNG
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {services.map((service) => (

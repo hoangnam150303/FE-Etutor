@@ -50,9 +50,8 @@ const TutorHeader = ({ onToggle, isOpen }) => {
   return (
     <div className="">
       <div
-        className={`${
-          isOpen ? "w-52" : "w-20"
-        } duration-300 relative h-full bg-gradient-to-br from-[#679089] via-[#679079] to-[#679069] hidden lg:block rounded-l-lg`}
+        className={`${isOpen ? "w-52" : "w-20"
+          } duration-300 relative h-full bg-gradient-to-br from-[#679089] via-[#679079] to-[#679069] hidden lg:block rounded-l-lg`}
       >
         <div className="w-64 h-20">
           <div className="w-3/5 flex justify-between items-center mx-2">
@@ -64,9 +63,8 @@ const TutorHeader = ({ onToggle, isOpen }) => {
           </div>
         </div>
         <RightOutlined
-          className={`${
-            isOpen && "rotate-180"
-          } absolute text-3xl cursor-pointer -right-4 top-16 w-8 border-2 bg-slate-50 text-slate-500 border-slate-50 rounded-full`}
+          className={`${isOpen && "rotate-180"
+            } absolute text-3xl cursor-pointer -right-4 top-16 w-8 border-2 bg-slate-50 text-slate-500 border-slate-50 rounded-full`}
           onClick={onToggle}
         />
         <ul className="pt-6">
@@ -76,15 +74,13 @@ const TutorHeader = ({ onToggle, isOpen }) => {
               <NavLink
                 key={index}
                 to={item.path}
-                className={`flex items-center gap-x-4 py-4 h-16 px-7 text-base ${
-                  isActive ? "bg-[#eee5da] text-[#f18966]" : "text-slate-200"
-                } hover:bg-[#eee5da] duration-300 hover:text-black`}
+                className={`flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive ? "bg-[#eee5da] text-[#f18966]" : "text-slate-200"
+                  } hover:bg-[#eee5da] duration-300 hover:text-black`}
               >
                 {item.icon}
                 <span
-                  className={`${
-                    !isOpen && "scale-0"
-                  } origin-left duration-100 text-base font-medium`}
+                  className={`${!isOpen && "scale-0"
+                    } origin-left duration-100 text-base font-medium`}
                 >
                   {item.title}
                 </span>
@@ -125,18 +121,16 @@ const TutorHeader = ({ onToggle, isOpen }) => {
                   key={index}
                   to={menu.path}
                   className={({ isActive }) =>
-                    `flex items-center gap-x-4 py-4 h-16 px-7 text-base ${
-                      isActive
-                        ? "bg-slate-100 text-indigo-600"
-                        : "text-gray-600"
+                    `flex items-center gap-x-4 py-4 h-16 px-7 text-base ${isActive
+                      ? "bg-slate-100 text-indigo-600"
+                      : "text-gray-600"
                     } hover:bg-slate-100 duration-300`
                   }
                 >
                   {menu.icon}
                   <span
-                    className={`${
-                      !isOpen && "scale-0"
-                    } origin-left duration-300 text-base font-medium`}
+                    className={`${!isOpen && "scale-0"
+                      } origin-left duration-300 text-base font-medium`}
                   >
                     {menu.title}
                   </span>
