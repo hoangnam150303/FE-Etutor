@@ -378,7 +378,6 @@ const ClassRegis = () => {
                           </Select.Option>
                         ))}
                       </Select>
-
                       <div className="h-2 error ml-1">
                         {errors.tutor && touched.tutor && (
                           <div className="text-red-500">{errors.tutor}</div>

@@ -10,6 +10,8 @@ const ListClass = () => {
   const fetchClasses = async () => {
     try {
       const response = await classApi.getClassByTutor();
+      console.log(response.data.classValid);
+      
       if (response.data.success) {
         setClasses(response.data.classValid);
       }

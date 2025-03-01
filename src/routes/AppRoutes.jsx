@@ -28,7 +28,7 @@ function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/otp" element={<OTPPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/callPage/:id" element={<CallPage />} />
+      <Route path="/callPage" element={<CallPage />} />
       <Route path="admin" element={<AdminLayout />}>
         <Route path="user" element={<UserPage />} />
         <Route path="courses" element={<Courses />} />

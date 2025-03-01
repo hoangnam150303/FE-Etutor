@@ -47,30 +47,24 @@ const userApi = {
 
   updateStatusUser: (id, data) => {
     console.log(data);
-    
+
     const url = `/updateStatusUser/${id}`;
     return axiosClient.put(url, data);
   },
-  //   postLoginWithFacebook: (accessToken) => {
-  //     const url = LOGIN_API_ENDPOINT + '/fb';
-  //     return axiosClient.post(url, accessToken);
-  //   },
-  //   getAuth: () => {
-  //     const url = LOGIN_API_ENDPOINT + '/auth';
-  //       return axiosClient.get(url);
-  //   },
 
-  //   postRefreshToken: (refreshToken) => {
-  //     const url = LOGIN_API_ENDPOINT + '/refresh_token';
-  //     return axiosClient.post(url, refreshToken);
-  //   },
+  getUserById: (id) => {
+    const url = `/getUserById/${id}`;
+    return axiosClient.get(url);
+  },
 
-  //   postLogout: () => {
-  //     const url = LOGIN_API_ENDPOINT + '/logout';
-  //       return axiosClient.post(url, {
-  //         token: localStorage.getItem(constants.ACCESS_TOKEN_KEY),
-  //       });
-  //   },
+  updateProfile: (data) => {
+    const url = `/updateProfile`;
+    return axiosClient.put(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
 };
 
 export default userApi;
