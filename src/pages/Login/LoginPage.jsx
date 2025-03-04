@@ -31,7 +31,7 @@ export default function Login() {
   };
   useEffect(() => {
     if (role) {
-     
+
       if (role === "Student") {
         navigate("/");
       } else if (role === "Admin") {
@@ -53,7 +53,7 @@ export default function Login() {
       console.log(error, "error");
     }
   };
- 
+
   // Xử lý điều hướng khi `userRole` thay đổi và `isAuth` là true
   //   useEffect(() => {
   //     // if (isAuth && userRole) {
