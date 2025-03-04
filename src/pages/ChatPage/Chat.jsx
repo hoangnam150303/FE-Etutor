@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserRequest } from "../../reducers/user";
 import { io } from "socket.io-client"; // không cần thiết nữa nếu dùng SocketContext
 import callApi from "../../hooks/callApi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketContext"; // import hook từ SocketContext
 import chatApi from "../../hooks/chatApi";
 
@@ -166,7 +166,15 @@ const Chat = () => {
           >
             ✖
           </button>
-          <div className="text-lg font-bold">Chat</div>
+          <div className="text-lg font-bold">
+            Chat
+            <Link to={"/callPage"}>
+              <Button className="ml-24 w-12 h-5 " type="primary">
+                <PhoneOutlined />
+              </Button>
+            </Link>
+          </div>
+
           <Input
             placeholder="Search"
             prefix={<SearchOutlined />}
