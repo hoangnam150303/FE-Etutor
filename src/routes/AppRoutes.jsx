@@ -18,13 +18,25 @@ import ListStudents from "../pages/TutorPage/ListStudents";
 import UserBlog from "../pages/UsersPage/UserBlog";
 import HomeLayout from "../layouts/HomeLayout";
 import BlogDetail from "../pages/UsersPage/BlogDetail";
+import CoursePage from "../pages/CoursePage/CoursePage";
 import { CallPage } from "../pages/CallPage/CallPage";
 import Chat from "../pages/ChatPage/Chat";
+import HomePage from "../pages/HomePage/HomePage";
+import BlogPage from "../pages/BlogPage/BlogPage";
+import BlogDetailOfHome from "../pages/BlogPage/BlogDetailOfHome";
+import ListClassOfUser from "../pages/UsersPage/ListClass";
+import InfoClassOfUser from "../pages/UsersPage/InfoOfClass";
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<HomeLayout />} />
+      <Route path="/" element={<HomeLayout />} >
+        <Route path='' element={<HomePage />} />
+        <Route path="/courses" element={<CoursePage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<BlogDetailOfHome />} />
+      </Route>
+
       <Route path="/login" element={<LoginPage />} />
       <Route path="/otp" element={<OTPPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -41,6 +53,8 @@ function AppRoutes() {
         <Route path="chat" element={<Chat />} />
         <Route path="blog" element={<UserBlog />} />
         <Route path="blog/:id" element={<BlogDetail />} />
+        <Route path="listClass" element={<ListClassOfUser />} />
+        <Route path="detailClass/:id" element={<InfoClassOfUser />} />
       </Route>
 
       <Route path="tutor" element={<TutorLayout />}>

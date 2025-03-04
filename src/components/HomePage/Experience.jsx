@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Carousel } from "antd";
-import review1 from "../assets/images/review-1.webp";
-import review2 from "../assets/images/review-2.webp";
-import review3 from "../assets/images/review-3.webp";
+import review1 from "../../assets/images/review-1.webp";
+import review2 from "../../assets/images/review-2.webp";
+import review3 from "../../assets/images/review-3.webp";
 
 const experience = [
     {

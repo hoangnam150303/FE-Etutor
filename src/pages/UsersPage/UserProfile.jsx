@@ -65,10 +65,7 @@ const UserProfile = () => {
     }
   }, [isModalOpen, user]);
 
-  // Hàm chuyển hướng
-  const goToListClass = () => {
-    navigate("/tutor/list-classes");
-  };
+
 
   const showModal = () => setIsModalOpen(true);
   const showModalAvatar = () => setIsModalAvatarOpen(true);
@@ -113,9 +110,6 @@ const UserProfile = () => {
             <h4 className="text-lg font-semibold">{user.username}</h4>
 
             <div className="mt-4 flex justify-center gap-3">
-              <Button type="primary" onClick={goToListClass}>
-                List Class
-              </Button>
 
               <Button type="primary" onClick={showModalAvatar}>
                 Update Avatar

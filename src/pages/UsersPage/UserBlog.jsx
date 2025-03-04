@@ -5,96 +5,62 @@ import {
   Modal,
   Button,
   Form as AntForm,
+  Upload,
+  message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { Content } from "antd/es/layout/layout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import blogApi from "../../hooks/blogApi";
+import Item from "antd/es/list/Item";
+import { UploadOutlined } from "@ant-design/icons";
+import courseApi from "../../hooks/courseApi";
+import classApi from "../../hooks/classApi";
 
 const { Search } = Input;
 
-let blogs = [
-  {
-    title: "Hướng dẫn bắt đầu với React.js",
-    description:
-      "Bài viết này sẽ hướng dẫn bạn từng bước để bắt đầu làm việc với React.js.",
-    author: "John Doe",
-  },
-  {
-    title: "Cách nhanh chóng học Angular từ cơ bản đến nâng cao",
-    description:
-      "Những điều cơ bản bạn cần biết và những thủ thuật nâng cao để trở thành một lập trình viên Angular giỏi.",
-    author: "Jane Smith",
-  },
-  {
-    title: "Làm thế nào để tối ưu hóa website của bạn cho tốc độ tải nhanh",
-    description:
-      "Bài viết này sẽ cung cấp những chiến lược và công cụ để tối ưu hóa hiệu suất tải trang web của bạn.",
-    author: "David Johnson",
-  },
-  {
-    title: "10 framework JavaScript phổ biến bạn nên biết",
-    description:
-      "Tổng quan về các framework JavaScript phổ biến nhất hiện nay và lý do tại sao bạn nên sử dụng chúng.",
-    author: "Emily Brown",
-  },
-  {
-    title: "Tại sao TypeScript là một lựa chọn tốt cho dự án của bạn",
-    description:
-      "Lý do và lợi ích của việc sử dụng TypeScript trong các dự án phần mềm của bạn.",
-    author: "Michael Clark",
-  },
-  {
-    title: "Các thủ thuật để trở thành một lập trình viên front-end xuất sắc",
-    description:
-      "Những bí quyết và kinh nghiệm để phát triển kỹ năng lập trình front-end của bạn.",
-    author: "Sophia Rodriguez",
-  },
-  {
-    title: "Làm thế nào để thiết kế giao diện người dùng hiệu quả",
-    description:
-      "Những nguyên tắc thiết kế UI/UX để tối ưu hóa trải nghiệm người dùng.",
-    author: "Daniel Lee",
-  },
-  {
-    title: "Tại sao Agile là phương pháp phát triển phần mềm phổ biến nhất",
-    description:
-      "Lợi ích của việc áp dụng phương pháp Agile trong phát triển phần mềm và các thực tiễn hiệu quả.",
-    author: "Jessica Wang",
-  },
-  {
-    title: "Cách sử dụng Node.js để xây dựng các ứng dụng web mạnh mẽ",
-    description:
-      "Hướng dẫn từng bước để bắt đầu với Node.js và xây dựng các ứng dụng web phức tạp.",
-    author: "Andrew Miller",
-  },
-  {
-    title:
-      "Làm thế nào để bảo mật ứng dụng web của bạn chống lại các cuộc tấn công",
-    description:
-      "Các chiến lược và công cụ để bảo vệ ứng dụng web của bạn khỏi các mối đe dọa an ninh mạng.",
-    author: "Alexandra Martinez",
-  },
-];
-
 const UserBlog = () => {
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
-
-  const handleChangeFilter = (value) => {
-    console.log(`selected ${value}`);
+  const [blogs, setBlogs] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [classess, setClasses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState("All");
+  useEffect(() => {
+    fetchBlogsByUser();
+  }, [searchTerm,filter]);
+  const fetchBlogsByUser = async () => {
+    try {      
+      const response = await blogApi.getAllBlogByUser(searchTerm,filter);
+      setBlogs(response.data.blog);
+    } catch (error) {
+      console.error(error);
+    }
   };
+  const fetchCoursesandClasses = async () => {
+    try {
+      const courses = await courseApi.getAllCourse();
+      setCourses(courses.data.courses);
+      const classes = await classApi.getAllClass();
+      setClasses(classes.data.classValid);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   const navigate = useNavigate();
 
-  const handleDetailClick = () => {
-    navigate(`/user/blog/:id`);
+  const handleDetailClick = (id) => {
+    navigate(`/user/blog/${id}`);
   };
 
   // Tạo Blog
   const [isModalOpenBlog, setIsModalOpenBlog] = useState(false);
   const showModalBlog = () => {
+    fetchCoursesandClasses();
     setIsModalOpenBlog(true);
   };
   const handleOkBlog = () => {
@@ -103,22 +69,29 @@ const UserBlog = () => {
   const handleCancelBlog = () => {
     setIsModalOpenBlog(false);
   };
-
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  const normFile = (e) => {
+    console.log("Upload event:", e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
   };
-
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .min(5, "Title phải có ít nhất 5 ký tự")
       .max(100, "Title không được quá 100 ký tự")
       .required("Vui lòng nhập Title"),
-    description: Yup.string()
-      .min(10, "Description phải có ít nhất 10 ký tự")
-      .required("Vui lòng nhập Description"),
-    courseName: Yup.array()
+    content: Yup.string()
+      .min(10, "Content phải có ít nhất 10 ký tự")
+      .required("Vui lòng nhập content"),
+    courseName: Yup.string()
       .min(1, "Vui lòng chọn ít nhất một khóa học")
       .required("Vui lòng chọn ít nhất một khóa học"),
+    className: Yup.string()
+      .min(1, "Vui chọn ít nhất một lớp học")
+      .required("Vui chọn ít nhất một lớp học"),
+    image: Yup.mixed().required("Vui lòng chọn hình anh"),
+    file: Yup.mixed().required("Vuiź chọn video"),
   });
 
   return (
@@ -136,7 +109,7 @@ const UserBlog = () => {
               <Search
                 placeholder="input search text"
                 allowClear
-                onSearch={onSearch}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 style={{
                   width: 500,
                 }}
@@ -144,28 +117,27 @@ const UserBlog = () => {
             </div>
             <div className="top-body-select">
               <Select
-                defaultValue="lucy"
+                placeholder="Filter"
                 style={{
                   width: 200,
                 }}
-                onChange={handleChangeFilter}
+                onChange={(value) => setFilter(value)}
                 options={[
                   {
-                    value: "jack",
-                    label: "Jack",
+                    value: "all",
+                    label: "All",
                   },
                   {
-                    value: "lucy",
-                    label: "Lucy",
+                    value: "popular",
+                    label: "Popular",
                   },
                   {
-                    value: "Yiminghe",
-                    label: "yiminghe",
+                    value: "deleted",
+                    label: "Deleted",
                   },
                   {
-                    value: "disabled",
-                    label: "Disabled",
-                    disabled: true,
+                    value: "active",
+                    label: "Active",
                   },
                 ]}
               />
@@ -187,12 +159,28 @@ const UserBlog = () => {
               width={750}
             >
               <Formik
-                initialValues={{ title: "", description: "", courseName: [] }}
+                initialValues={{
+                  title: "",
+                  content: "",
+                  courseName: "",
+                  className: "",
+                  image: [],
+                  file: [],
+                }}
                 validationSchema={validationSchema}
-                onSubmit={(values, { resetForm }) => {
-                  console.log("Form data:", values);
-                  resetForm();
-                  setIsModalOpenBlog(false);
+                onSubmit={async (values, { resetForm }) => {
+                  try {
+                    const response = await blogApi.postCreateBlog(values);
+                    if (response.status === 200) {
+                      resetForm();
+                      setIsModalOpenBlog(false);
+                      fetchBlogsByUser();
+                      message.success("Blog added successfully");
+                    }
+                  } catch (error) {
+                    console.log(error);
+                    message.error(error);
+                  }
                 }}
               >
                 {({ setFieldValue, values, handleSubmit }) => (
@@ -209,9 +197,9 @@ const UserBlog = () => {
 
                     <div>
                       <label className="font-bold">Content</label>
-                      <Field name="description" as={TextArea} rows={5} />
+                      <Field name="content" as={TextArea} rows={5} />
                       <ErrorMessage
-                        name="description"
+                        name="content"
                         component="div"
                         className="text-red-500 text-sm"
                       />
@@ -223,26 +211,99 @@ const UserBlog = () => {
                         {({ field, form }) => (
                           <>
                             <Select
-                              mode="multiple"
                               style={{ width: "100%" }}
                               onChange={(value) =>
                                 form.setFieldValue("courseName", value)
                               }
                               value={form.values.courseName}
-                              options={[
-                                { label: "Tutor 1", value: "tutor1" },
-                                { label: "Tutor 2", value: "tutor2" },
-                              ]}
+                              options={courses.map((course) => ({
+                                label: course.name,
+                                value: course._id,
+                              }))}
                             />
                             {form.errors.courseName &&
-                            form.touched.courseName ? (
-                              <div className="text-red-500 text-sm">
-                                {form.errors.courseName}
-                              </div>
-                            ) : null}
+                              form.touched.courseName && (
+                                <div className="text-red-500 text-sm">
+                                  {form.errors.courseName}
+                                </div>
+                              )}
                           </>
                         )}
                       </Field>
+                    </div>
+
+                    {/* Class */}
+                    <div>
+                      <label className="font-bold">Class name</label>
+                      <Field name="className">
+                        {({ field, form }) => (
+                          <>
+                            <Select
+                              style={{ width: "100%" }}
+                              onChange={(value) =>
+                                form.setFieldValue("className", value)
+                              }
+                              value={form.values.className}
+                              options={classess.map((cls) => ({
+                                label: cls.name,
+                                value: cls._id,
+                              }))}
+                            />
+                            {form.errors.className &&
+                              form.touched.className && (
+                                <div className="text-red-500 text-sm">
+                                  {form.errors.className}
+                                </div>
+                              )}
+                          </>
+                        )}
+                      </Field>
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="Image Course">Image Course</label>
+                      <Item
+                        name="upload"
+                        label="Upload"
+                        valuePropName="image"
+                        getValueFromEvent={normFile}
+                      >
+                        <Upload
+                          name="image"
+                          listType="picture"
+                          beforeUpload={(file) => {
+                            setFieldValue("image", file);
+                            return false; // Ngăn chặn upload tự động
+                          }}
+                        >
+                          <Button icon={<UploadOutlined />}>
+                            Click to upload
+                          </Button>
+                        </Upload>
+                      </Item>
+                    </div>
+
+                    <div className="mb-3">
+                      <label htmlFor="File">File</label>
+                      <Item
+                        name="upload"
+                        label="Upload"
+                        valuePropName="file"
+                        getValueFromEvent={normFile}
+                      >
+                        <Upload
+                          name="file"
+                          listType="file"
+                          beforeUpload={(file) => {
+                            setFieldValue("file", file);
+                            return false; // Ngăn chặn upload tự động
+                          }}
+                        >
+                          <Button icon={<UploadOutlined />}>
+                            Click to upload
+                          </Button>
+                        </Upload>
+                      </Item>
                     </div>
 
                     <div className="flex justify-end">
@@ -263,24 +324,37 @@ const UserBlog = () => {
             <div className="list-blog">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {blogs.map((blog, index) => (
-                  <div className="" key={index}>
+                  <div className="" key={blog?._id}>
                     <div className="bg-white rounded-2xl shadow-md p-5 hover:shadow-lg transition-all border border-gray-200">
                       <h2 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
-                        {blog.title}
+                        {blog?.title}
                       </h2>
+                      <img src={blog?.image} alt="" />
                       <p className="text-gray-600 mb-3 line-clamp-4">
-                        {blog.description}
+                        {blog?.content}
                       </p>
                       <p className="text-sm text-gray-500 mb-5">
                         Author:{" "}
                         <span className="font-semibold text-red-500">
-                          {blog.author}
+                          {blog?.author?.username}
+                        </span>
+                      </p>
+                      <p className="text-sm text-gray-500 mb-5">
+                        Class:{" "}
+                        <span className="font-semibold text-red-500">
+                          {blog?.classId?.name}
+                        </span>
+                      </p>
+                      <p className="text-sm text-gray-500 mb-5">
+                        Course:{" "}
+                        <span className="font-semibold text-red-500">
+                          {blog?.courseId?.name}
                         </span>
                       </p>
                       <div className="flex justify-end">
                         <button
                           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded duration-500"
-                          onClick={() => handleDetailClick()}
+                          onClick={() => handleDetailClick(blog?._id)}
                         >
                           Detail
                         </button>
