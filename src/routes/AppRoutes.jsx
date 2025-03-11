@@ -28,6 +28,9 @@ import ListClassOfUser from "../pages/UsersPage/ListClass";
 import InfoClassOfUser from "../pages/UsersPage/InfoOfClass";
 import CourseDetailOfHome from "../pages/CoursePage/CourseDetailOfHome";
 
+import ForgotPassword from "../pages/Login/ForgotPassword";
+import ResetPassword from "../pages/Login/ResetPassword";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -40,6 +43,7 @@ function AppRoutes() {
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/otp" element={<OTPPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/callPage" element={<CallPage />} />
@@ -53,6 +57,7 @@ function AppRoutes() {
       <Route path="user" element={<UserLayout />}>
         <Route path="profile" element={<UserProfile />} />
         <Route path="chat" element={<Chat />} />
+        <Route path="reset-password" element={<ResetPassword />} />
         <Route path="blog" element={<UserBlog />} />
         <Route path="blog/:id" element={<BlogDetail />} />
         <Route path="listClass" element={<ListClassOfUser />} />

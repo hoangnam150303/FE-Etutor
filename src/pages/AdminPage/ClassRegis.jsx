@@ -46,6 +46,7 @@ const ClassRegis = () => {
   const [search, setSearch] = useState("");
   const [classes, setClasses] = useState([]);
   const [acceptClass, setAcceptClass] = useState({});
+  const [editClass, setEditClass] = useState({});
   const [tutors, setTutors] = useState([]);
   const { styles } = useStyle();
 
@@ -55,6 +56,7 @@ const ClassRegis = () => {
 
   // Modal Accept
   const [isModalOpenAccept, setIsModalOpenAccept] = useState(false);
+  const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const fetchClasses = async (filter, search) => {
     try {
       const response = await classApi.getAllClass(filter, search);
@@ -73,6 +75,8 @@ const ClassRegis = () => {
   };
   const handleAcceptClass = async (classId, tutorId) => {
     try {
+      console.log(11111);
+
       const response = await classApi.postAcceptClass(classId, tutorId);
       if (response.status === 200) {
         message.success("Accept successfully");
@@ -89,6 +93,12 @@ const ClassRegis = () => {
     fetchDetailCourse(validForm.courseId._id);
     setIsModalOpenAccept(true);
   };
+  const showModalEdit = (id) => {
+    const validForm = classes.find((item) => item._id === id);
+    setEditClass(validForm);
+    fetchDetailCourse(validForm.courseId._id);
+    setIsModalOpenEdit(true);
+  };
 
   // edit function
   const handleUpdateClass = async (classId, data) => {
@@ -99,7 +109,8 @@ const ClassRegis = () => {
       setIsModalOpenAccept(false);
     }
   };
-  const handleOkAccept = () => {
+  const handleCancelEdit = () => {
+    setAcceptClass({});
     setIsModalOpenAccept(false);
   };
   const handleCancelAccept = () => {
@@ -329,21 +340,21 @@ const ClassRegis = () => {
 
           {/* edit class */}
           <Modal
-            title="Accept Class"
-            open={isModalOpenAccept}
-            onCancel={handleCancelAccept}
+            title="Edit Class"
+            open={isModalOpenEdit}
+            onCancel={handleCancelEdit}
             footer={null}
           >
             <Formik
               // Sử dụng tutor mặc định từ acceptClass, nếu không có thì mặc định là ""
               initialValues={{
-                tutor: acceptClass.tutorId?._id,
+                tutor: editClass.tutorId?._id,
               }}
               // Nếu acceptClass có thể thay đổi sau khi Modal được mở, bạn nên bật enableReinitialize
               enableReinitialize={true}
               validationSchema={validationSchema}
               onSubmit={(values) => {
-                handleUpdateClass(acceptClass._id, values);
+                handleUpdateClass(editClass._id, values);
               }}
             >
               {({ values, errors, touched, setFieldValue }) => (
@@ -351,19 +362,19 @@ const ClassRegis = () => {
                   <div className="w-full flex justify-between items-baseline">
                     <label className="block mb-1 w-1/4">Class name</label>
                     <div className="w-3/4">
-                      <span>{acceptClass.name}</span>
+                      <span>{editClass.name}</span>
                     </div>
                   </div>
                   <div className="w-full flex justify-between items-baseline">
                     <label className="block mb-1 w-1/4">Course name</label>
                     <div className="w-3/4">
-                      <span>{acceptClass.courseId?.name}</span>
+                      <span>{editClass.courseId?.name}</span>
                     </div>
                   </div>
                   <div className="w-full flex justify-between items-baseline">
                     <label className="block mb-1 w-1/4">Student name</label>
                     <div className="w-3/4">
-                      <span>{acceptClass.studentId?.username}</span>
+                      <span>{editClass.studentId?.username}</span>
                     </div>
                   </div>
                   <div className="w-full flex justify-between items-baseline">

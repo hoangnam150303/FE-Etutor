@@ -34,7 +34,8 @@ const courseApi = {
   getDetailCourse: (id) => {
     const url = `${URL_BASE}/getDetailCourse/${id}`;
     return axiosClient.get(url);
-  }
+  },
+
 };
 
 export default courseApi;

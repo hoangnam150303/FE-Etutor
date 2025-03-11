@@ -141,6 +141,8 @@ export const CallPage = () => {
 
   const handleSubmit = () => {
     if (selectedUserId) {
+      console.log(selectedUserId);
+      
       callUser(selectedUserId);
     } else {
       alert("Vui lòng chọn một user!");

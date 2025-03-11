@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -66,7 +67,6 @@ const UserProfile = () => {
   }, [isModalOpen, user]);
 
 
-
   const showModal = () => setIsModalOpen(true);
   const showModalAvatar = () => setIsModalAvatarOpen(true);
   const handleCancel = () => setIsModalOpen(false);
@@ -111,9 +111,17 @@ const UserProfile = () => {
 
             <div className="mt-4 flex justify-center gap-3">
 
+              <Link to="/tutor/list-classes">
+                <Button type="primary">List Class</Button>
+              </Link>
+              <Link to="/user/chat">
+                <Button type="default">Message</Button>
+              </Link>
+
               <Button type="primary" onClick={showModalAvatar}>
                 Update Avatar
               </Button>
+
             </div>
           </Card>
         </div>
@@ -134,12 +142,23 @@ const UserProfile = () => {
                 <p className="border-b pb-2">{user.role}</p>
               </div>
             </div>
-            <Button type="primary" className="mt-4" onClick={showModal}>
-              Edit
-            </Button>
+
+            <div className="flex items-center justify-between">
+              <Button type="primary" className="" onClick={showModal}>Edit</Button>
+              <Link
+                to="/user/reset-password"
+                className="text-sm text-blue-500 hover:text-blue-800 transition duration-200"
+              >
+                ResetPassword
+              </Link>
+            </div>
+
           </Card>
         </div>
       </div>
+
+
+      {/* popup edit */}
 
       <Modal
         title="Edit Profile"
@@ -147,6 +166,7 @@ const UserProfile = () => {
         onCancel={handleCancel}
         footer={null}
       >
+
         <div className="space-y-4">
           <div>
             <label className="block font-medium">Full Name</label>
