@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Breadcrumb, Card, Button, List, Radio, Input, Modal } from 'antd';
 
 
 const UserProfile = () => {
-
-
-  // Khởi tạo useNavigate
-  const navigate = useNavigate();
-
-  // Hàm chuyển hướng
-  const goToListClass = () => {
-    navigate('/tutor/list-classes');
-  };
 
   const [userData, setUserData] = useState({
     fullName: 'John Doe',
@@ -46,7 +37,9 @@ const UserProfile = () => {
             <p className="text-gray-600">Full Stack Developer</p>
             <p className="text-gray-400 text-sm">Bay Area, San Francisco, CA</p>
             <div className="mt-4 flex justify-center gap-3">
-              <Button type="primary" onClick={goToListClass}>List Class</Button>
+              <Link to="/tutor/list-classes">
+                <Button type="primary">List Class</Button>
+              </Link>
               <Link to="/user/chat">
                 <Button type="default">Message</Button>
               </Link>
@@ -75,11 +68,21 @@ const UserProfile = () => {
                 <p className="border-b pb-2">{userData.phone}</p>
               </div>
             </div>
-            <Button type="primary" className="mt-4" onClick={showModal}>Edit</Button>
+
+            <div className="flex items-center justify-between">
+              <Button type="primary" className="" onClick={showModal}>Edit</Button>
+              <Link
+                to="/user/reset-password"
+                className="text-sm text-blue-500 hover:text-blue-800 transition duration-200"
+              >
+                ResetPassword
+              </Link>
+            </div>
           </Card>
         </div>
       </div>
 
+      {/* popup edit */}
       <Modal title="Edit Profile" open={isModalOpen} onCancel={handleCancel} footer={null}>
         <div className="space-y-4">
           <div>

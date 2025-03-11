@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import userApi from "../../hooks/useUser";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -13,6 +13,8 @@ import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import constants from "../../constants/constants";
 import { getUserRequest } from "../../reducers/user";
+
+import ForgotPassword from "./ForgotPassword";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -189,6 +191,30 @@ export default function Login() {
                     className="ml-0.5 text-red-500 text-sm"
                   />
                 </div>
+              </div>
+
+              {/* forgot password */}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <Field
+                    type="checkbox"
+                    id="remember"
+                    name="remember"
+                    className="mr-2"
+                  />
+                  <label
+                    htmlFor="remember"
+                    className="text-sm text-gray-600"
+                  >
+                    Remember me
+                  </label>
+                </div>
+                <Link
+                  to="/forgot-password"
+                  className="text-sm text-blue-500 hover:text-blue-800 transition duration-200"
+                >
+                  Forgot password?
+                </Link>
               </div>
 
               <div className="space-y-4">
