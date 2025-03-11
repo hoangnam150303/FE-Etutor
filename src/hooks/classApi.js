@@ -6,6 +6,8 @@ const classApi = {
     return axiosClient.get(url);
   },
   postAcceptClass: (classId, tutorId) => {
+    console.log(111);
+    
     const url = `${URL_BASE}/acceptClass/${classId}/${tutorId}`;
     return axiosClient.put(url);
   },
@@ -39,6 +41,10 @@ const classApi = {
   finishClass: (classId) => {
     const url = `${URL_BASE}/finishClass/${classId}`;
     return axiosClient.put(url);
+  },
+  postCreateClass: (courseId) => {
+    const url = `${URL_BASE}/registClass/${courseId}`;
+    return axiosClient.post(url);
   },
 };
 export default classApi;

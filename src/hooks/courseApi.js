@@ -1,8 +1,8 @@
 import { axiosClient } from "../ApiConfig/apiConfig";
 const URL_BASE = "/course";
 const courseApi = {
-  getAllCourse: (filter) => {
-    const url = `${URL_BASE}/getAllCourse?filter=${filter}`;
+  getAllCourse: (filter,search,typeUser) => {
+    const url = `${URL_BASE}/getAllCourse?filter=${filter}&search=${search}&typeUser=${typeUser}`;
     return axiosClient.get(url);
   },
 
@@ -34,7 +34,8 @@ const courseApi = {
   getDetailCourse: (id) => {
     const url = `${URL_BASE}/getDetailCourse/${id}`;
     return axiosClient.get(url);
-  }
+  },
+
 };
 
 export default courseApi;
