@@ -65,6 +65,7 @@ const Courses = () => {
   const [isModalOpenEdit, setIsModalOpenEdit] = useState(false);
   const [courses, setCourses] = useState([]);
   const [filter, setFilter] = useState("");
+  const [search, setSearch] = useState("");
   const [tutors, setTutors] = useState([]);
   const [courseEdit, setCourseEdit] = useState({});
   const handleChange = (value) => {
@@ -72,7 +73,7 @@ const Courses = () => {
   };
   const fetchCourses = async (filter) => {
     try {
-      const response = await courseApi.getAllCourse(filter);
+      const response = await courseApi.getAllCourse(filter, search, "admin");
       setCourses(response.data.courses);
     } catch (error) {}
   };

@@ -26,6 +26,7 @@ import BlogPage from "../pages/BlogPage/BlogPage";
 import BlogDetailOfHome from "../pages/BlogPage/BlogDetailOfHome";
 import ListClassOfUser from "../pages/UsersPage/ListClass";
 import InfoClassOfUser from "../pages/UsersPage/InfoOfClass";
+import CourseDetailOfHome from "../pages/CoursePage/CourseDetailOfHome";
 
 function AppRoutes() {
   return (
@@ -33,7 +34,8 @@ function AppRoutes() {
       <Route path="/" element={<HomeLayout />} >
         <Route path='' element={<HomePage />} />
         <Route path="/courses" element={<CoursePage />} />
-        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/course/:id" element={<CourseDetailOfHome />} />
+        <Route path="/blogs" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogDetailOfHome />} />
       </Route>
 

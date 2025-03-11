@@ -7,12 +7,14 @@ import Process from "../../components/HomePage/Process";
 import TestimonialPage from "../../components/HomePage/Experience";
 import Question from "../../components/HomePage/Question";
 import Post from "../../components/HomePage/Post";
+import Tutors from "../../components/HomePage/Tutors";
 
 const HomePage = () => {
     return (
         <div className="flex flex-col gap-y-6">
             <Banner />
             <Services />
+            <Tutors />
             <Supported />
             <Process />
             <TestimonialPage />

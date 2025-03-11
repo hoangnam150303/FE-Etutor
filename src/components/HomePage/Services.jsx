@@ -16,7 +16,9 @@ const ServiceCard = ({ key, title, image, detail }) => (
       <h3 className="text-2xl sm:text-xl lg:text-2xl xl:text-3xl font-bold mb-4 text-center text-blue-900 ">
         {title}
       </h3>
-    <span className="flex items-center gap-2"><CheckCircleTwoTone /> {detail}</span>
+      <span className="flex items-center gap-2">
+        <CheckCircleTwoTone /> {detail}
+      </span>
     </div>
   </div>
 );
@@ -26,7 +28,7 @@ const Services = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await courseApi.getAllCourse();
+        const response = await courseApi.getAllCourse("", "", "user");
         console.log(response.data.courses);
         setCourses(response.data.courses);
       } catch (error) {
