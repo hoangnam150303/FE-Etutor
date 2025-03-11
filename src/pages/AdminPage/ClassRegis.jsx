@@ -58,8 +58,9 @@ const ClassRegis = () => {
   const fetchClasses = async (filter, search) => {
     try {
       const response = await classApi.getAllClass(filter, search);
+      console.log(response.data);
 
-      setClasses(response.data);
+      setClasses(response.data.classValid);
     } catch (error) {
       console.log(error);
     }
@@ -184,17 +185,19 @@ const ClassRegis = () => {
       ),
     },
   ];
-  const dataSource = classes.map((item, i) => ({
-    key: item._id,
-    name: item.name,
-    studentName: item.studentId?.username,
-    tutorName: item.tutorId?.username,
-    courseName: item.courseId?.name,
-    isStart: item?.isStart,
-    isFinish: item?.isFinish,
-    timestamps: item?.createdAt,
-    isAccepted: item?.isAccepted,
-  }));
+  const dataSource = Array.isArray(classes)
+    ? classes.map((item) => ({
+        key: item._id,
+        name: item.name,
+        studentName: item.studentId?.username,
+        tutorName: item.tutorId?.username,
+        courseName: item.courseId?.name,
+        isStart: item?.isStart,
+        isFinish: item?.isFinish,
+        timestamps: item?.createdAt,
+        isAccepted: item?.isAccepted,
+      }))
+    : [];
 
   const { Option } = Select;
 

@@ -60,7 +60,7 @@ function AppRoutes() {
       <Route path="tutor" element={<TutorLayout />}>
         <Route path="" element={<HomePageOfTutor />} />
         <Route path="list-classes" element={<ListClass />} />
-        <Route path="list-classes/:className" element={<InfoOfClass />} />
+        <Route path="detailClass/:id" element={<InfoOfClass />} />
         <Route path="list-students" element={<ListStudents />} />
         <Route path="tutorChat" element={<Chat />} />
       </Route>

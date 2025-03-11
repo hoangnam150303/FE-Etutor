@@ -10,8 +10,6 @@ const ListClass = () => {
   const fetchClasses = async () => {
     try {
       const response = await classApi.getClassByTutor();
-      console.log(response.data.classValid);
-      
       if (response.data.success) {
         setClasses(response.data.classValid);
       }
@@ -41,9 +39,7 @@ const ListClass = () => {
               actions={[
                 <Button
                   type="primary"
-                  onClick={() =>
-                    navigate(`/tutor/list-classes/${item._id}`)
-                  }
+                  onClick={() => navigate(`/tutor/detailClass/${item._id}`)}
                 >
                   View
                 </Button>,
