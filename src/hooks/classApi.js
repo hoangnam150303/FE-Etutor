@@ -19,7 +19,10 @@ const classApi = {
     const url = `${URL_BASE}/getClassByTutor`;
     return axiosClient.get(url);
   },
-
+  getClassByStudent: () => {
+    const url = `${URL_BASE}/getClassByStudent`;
+    return axiosClient.get(url);
+  },
   getClassById: (classId) => {
     const url = `${URL_BASE}/getClassById/${classId}`;
     return axiosClient.get(url);

@@ -5,6 +5,7 @@ import avatarDefault from "../../assets/images/AvatarDefault.png";
 import { Button, Drawer } from "antd";
 import {
   AlignLeftOutlined,
+  BarsOutlined,
   FormOutlined,
   HomeOutlined,
   IdcardOutlined,
@@ -30,6 +31,11 @@ const UserHeader = ({ onToggle, isOpen }) => {
       title: "Blog",
       icon: <FormOutlined className="text-2xl" />,
       path: `/user/blog`,
+    },
+    {
+      title: "Classes",
+      icon: <BarsOutlined className="text-2xl" />,
+      path: `/user/listClass`,
     },
     {
       title: "Chat",

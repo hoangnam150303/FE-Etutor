@@ -1,5 +1,6 @@
 import { Breadcrumb } from "antd";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import imgBlog from '../../assets/images/AdvancedQualifications.webp'
 
@@ -43,6 +44,13 @@ let cardsData = [
 ];
 
 const BlogDetailOfHome = () => {
+
+    const navigate = useNavigate();
+
+    const handleDetailClick = () => {
+        navigate(`/blog/1`);
+    };
+    
     return (
         <div className="">
             <div className="blog-header">
