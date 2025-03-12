@@ -79,7 +79,7 @@ const Courses = () => {
   };
   const fetchTutors = async () => {
     try {
-      const tutors = await userApi.getAllUser("tutor");
+      const tutors = await userApi.getAllUser("tutor","");
       setTutors(tutors.data);
     } catch (error) {}
   };

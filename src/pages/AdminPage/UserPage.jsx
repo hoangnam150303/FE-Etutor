@@ -10,8 +10,9 @@ const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
   const fetchUsers = async (filter) => {
-    const response = await userApi.getAllUser(filter);
+    const response = await userApi.getAllUser(filter,search);
     setUsers(response.data);
   };
   const handleStatus = async (id, status) => {
