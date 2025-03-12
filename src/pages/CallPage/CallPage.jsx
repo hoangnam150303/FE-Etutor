@@ -62,7 +62,7 @@ export const CallPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await userApi.getAllUser(); // Giả sử userApi.getAllUser() trả về danh sách users
+        const response = await userApi.getAllUser("",""); // Giả sử userApi.getAllUser() trả về danh sách users
         setUsers(response.data);
       } catch (error) {
         console.error("Error fetching users:", error);
