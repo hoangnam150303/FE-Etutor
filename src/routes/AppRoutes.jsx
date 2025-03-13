@@ -30,6 +30,7 @@ import CourseDetailOfHome from "../pages/CoursePage/CourseDetailOfHome";
 
 import ForgotPassword from "../pages/Login/ForgotPassword";
 import ResetPassword from "../pages/Login/ResetPassword";
+import TutorPage from "../pages/HomePage/TutorPage";
 
 function AppRoutes() {
   return (
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path='' element={<HomePage />} />
         <Route path="/courses" element={<CoursePage />} />
         <Route path="/course/:id" element={<CourseDetailOfHome />} />
+        <Route path="/tutors" element={<TutorPage />} />
         <Route path="/blogs" element={<BlogPage />} />
         <Route path="/blog/:id" element={<BlogDetailOfHome />} />
       </Route>
