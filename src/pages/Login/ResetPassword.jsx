@@ -11,7 +11,7 @@ const ResetPassword = () => {
                     Reset Password
                 </h2>
                 <Formik
-                    initialValues={{ oldPassword: "", newPassword: "", confirmPassword: "" }}
+                    initialValues={{ oldPassword: "", newPassword: "", confirmPassword: "", OTP: "" }}
                     validationSchema={Yup.object({
                         oldPassword: Yup.string().required("Old password is required"),
                         newPassword: Yup.string()
@@ -20,6 +20,9 @@ const ResetPassword = () => {
                         confirmPassword: Yup.string()
                             .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
                             .required("Confirm password is required"),
+                        OTP: Yup.number()
+                            .oneOf([Yup.ref("OTP"), null, "OTP must be number"])
+                            .required("Confirm OTP is required"),
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         alert("Password successfully reset!");
@@ -75,6 +78,22 @@ const ResetPassword = () => {
                                     />
                                 </div>
                                 <ErrorMessage name="confirmPassword" component="p" className="text-sm text-red-500 mt-1" />
+                            </div>
+
+                            <div className="mb-4 relative">
+                                <label className="block text-gray-700 font-medium mb-2" htmlFor="OTP">
+                                    OTP
+                                </label>
+                                <div className="flex items-center border rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
+                                    <LockOutlined className="text-gray-500 text-lg mr-2" />
+                                    <Field
+                                        type="password"
+                                        name="OTP"
+                                        className="w-full outline-none"
+                                        placeholder="Input OTP"
+                                    />
+                                </div>
+                                <ErrorMessage name="OTP" component="p" className="text-sm text-red-500 mt-1" />
                             </div>
 
                             <button
