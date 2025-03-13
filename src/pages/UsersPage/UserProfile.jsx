@@ -38,7 +38,7 @@ const UserProfile = () => {
     try {
       const response = await userApi.getUserById(userId);
       setUser(response.data.user);
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     dispatch(getUserRequest());
@@ -50,7 +50,7 @@ const UserProfile = () => {
   const showPasswordFields = async () => {
     try {
       setUpdatePassword(true);
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     if ((isModalOpen && user) || (isModalAvatarOpen && user)) {
@@ -111,7 +111,7 @@ const UserProfile = () => {
 
             <div className="mt-4 flex justify-center gap-3">
 
-              <Link to="/tutor/list-classes">
+              <Link to="/user/listClass">
                 <Button type="primary">List Class</Button>
               </Link>
               <Link to="/user/chat">
@@ -145,14 +145,7 @@ const UserProfile = () => {
 
             <div className="flex items-center justify-between">
               <Button type="primary" className="" onClick={showModal}>Edit</Button>
-              <Link
-                to="/user/reset-password"
-                className="text-sm text-blue-500 hover:text-blue-800 transition duration-200"
-              >
-                ResetPassword
-              </Link>
             </div>
-
           </Card>
         </div>
       </div>
