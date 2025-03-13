@@ -50,6 +50,9 @@ const HomeHeader = () => {
           <a href="/courses" className="hover:text-red-500">
             Courses
           </a>
+          <a href="/tutors" className="hover:text-red-500">
+            Tutors
+          </a>
           <a href="/blogs" className="hover:text-red-500 relative">
             Blogs
             <span className="absolute -top-1 -right-6 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
