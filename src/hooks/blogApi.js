@@ -18,7 +18,16 @@ const blogApi = {
   getBlogById:(id)=>{
     const url = `${URL_BASE}/getBlogById/${id}`;    
     return axiosClient.get(url);
-  }
+  },
+
+  getAllBlog:(search,filter)=>{
+    const url = `${URL_BASE}/getAllBlog/?search=${search}&filter=${filter}`;    
+    return axiosClient.get(url);
+  },
+  likePost:(id)=>{
+    const url = `${URL_BASE}/likeBlog/${id}`;    
+    return axiosClient.put(url);
+  },
 };
 
 export default blogApi;

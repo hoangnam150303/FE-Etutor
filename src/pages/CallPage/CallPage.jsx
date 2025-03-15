@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Input, Select, Space } from "antd";
+import { Button, Input, Popconfirm, Select, Space } from "antd";
 import {
   AudioOutlined,
   VideoCameraOutlined,
@@ -8,9 +8,10 @@ import {
 import { useSocket } from "../../context/SocketContext"; // Import hook từ SocketContext
 import Peer from "simple-peer";
 
-import userApi from "../../hooks/useUser";
+import classApi from "../../hooks/classApi";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserRequest } from "../../reducers/user";
+import { useNavigate } from "react-router-dom";
 export const CallPage = () => {
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
@@ -27,7 +28,12 @@ export const CallPage = () => {
   const connectionRef = useRef();
   const socket = useSocket();
   const userId = useSelector((state) => state.user.id);
+  const username = useSelector((state) => state.user.username);
+  const userRole = useSelector((state) => state.user.role);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [isCameraOn, setIsCameraOn] = useState(true);
+  const [isAudioOn, setIsAudioOn] = useState(true);
   useEffect(() => {
     try {
       dispatch(getUserRequest());
@@ -54,7 +60,6 @@ export const CallPage = () => {
     } catch (error) {
       console.log(error);
     }
-    console.log(userVideo);
 
     setMe(userId);
   }, [userId, socket, userVideo]);
@@ -62,15 +67,21 @@ export const CallPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await userApi.getAllUser("",""); // Giả sử userApi.getAllUser() trả về danh sách users
-        setUsers(response.data);
+        if (userRole === "Tutor") {
+          const response = await classApi.getClassByTutor();
+
+          setUsers(response.data.classValid);
+        } else if (userRole === "Student") {
+          const response = await classApi.getClassByStudent();
+          setUsers(response.data.classValid);
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [userRole]);
 
   const handleSelectChange = (value) => {
     setSelectedUserId(value);
@@ -89,7 +100,7 @@ export const CallPage = () => {
           userToCall: id,
           signal: data,
           from: me,
-          name: name,
+          name: username,
         });
       });
 
@@ -141,17 +152,41 @@ export const CallPage = () => {
 
   const handleSubmit = () => {
     if (selectedUserId) {
-      console.log(selectedUserId);
-      
+      setName(username);
+      console.log(username);
+
       callUser(selectedUserId);
     } else {
       alert("Vui lòng chọn một user!");
     }
   };
   const leaveCall = () => {
-    setCallEnded(true);
-    connectionRef.current.destroy();
+    if (userRole === "Tutor") {
+      navigate("/tutor/tutorChat");
+    } else {
+      navigate("/user/chat");
+    }
   };
+  // Hàm tắt camera
+  const toggleCamera = () => {
+    if (stream) {
+      stream.getVideoTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+      setIsCameraOn((prev) => !prev);
+    }
+  };
+
+  // Hàm toggle audio
+  const toggleAudio = () => {
+    if (stream) {
+      stream.getAudioTracks().forEach((track) => {
+        track.enabled = !track.enabled;
+      });
+      setIsAudioOn((prev) => !prev);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       <h1 className="text-2xl font-bold mb-4">Call Page</h1>
@@ -177,34 +212,64 @@ export const CallPage = () => {
         </div>
         <div className="mt-4 flex justify-center">
           <Space size="middle">
-            <Button shape="circle" icon={<AudioOutlined />} />
-            <Button shape="circle" icon={<VideoCameraOutlined />} />
-            <Button shape="circle" danger icon={<StopOutlined />} />
+            <Button
+              shape="circle"
+              icon={<AudioOutlined />}
+              onClick={toggleAudio}
+              type={isAudioOn ? "primary" : "default"}
+            />
+            <Button
+              shape="circle"
+              icon={<VideoCameraOutlined />}
+              onClick={toggleCamera}
+              type={isCameraOn ? "primary" : "default"}
+            />
+            <Popconfirm
+              title="Bạn có chắc chắn muốn thoát cuộc gọi?"
+              onConfirm={leaveCall}
+              okText="Có"
+              cancelText="Không"
+            >
+              <Button shape="circle" danger icon={<StopOutlined />} />
+            </Popconfirm>
           </Space>
         </div>
         <div className="mt-4 flex items-center gap-2">
-          <Select
-            className="w-200"
-            placeholder="Chọn người dùng"
-            onChange={handleSelectChange}
-            value={selectedUserId}
-          >
-            {users.map((user) => (
-              <Select.Option key={user._id} value={user._id}>
-                {user.username}
-              </Select.Option>
-            ))}
-          </Select>
+          {!receivingCall && !callAccepted ? (
+            <>
+              {" "}
+              <Select
+                className="w-200"
+                placeholder="Chọn người dùng"
+                onChange={handleSelectChange}
+                value={selectedUserId}
+              >
+                {(() => {
+                  // Lấy danh sách các đối tượng tùy theo vai trò
+                  const options =
+                    userRole === "Student"
+                      ? users.map((classItem) => classItem.tutorId)
+                      : userRole === "Tutor"
+                      ? users.map((classItem) => classItem.studentId)
+                      : [];
 
-          <div>
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></Input>
-          </div>
-          <Button type="primary" onClick={handleSubmit}>
-            Gọi
-          </Button>
+                  // Dùng Map để loại bỏ phần tử trùng lặp dựa trên _id
+                  const uniqueOptions = Array.from(
+                    new Map(options.map((opt) => [opt._id, opt])).values()
+                  );
+
+                  return uniqueOptions.map((opt) => (
+                    <Select.Option key={opt._id} value={opt._id}>
+                      {opt.username}
+                    </Select.Option>
+                  ));
+                })()}
+              </Select>
+              <Button type="primary" onClick={handleSubmit}>
+                Gọi
+              </Button>
+            </>
+          ) : null}
           <div>
             {receivingCall && !callAccepted ? (
               <div>

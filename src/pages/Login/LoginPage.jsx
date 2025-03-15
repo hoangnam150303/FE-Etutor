@@ -14,8 +14,6 @@ import * as Yup from "yup";
 import constants from "../../constants/constants";
 import { getUserRequest } from "../../reducers/user";
 
-import ForgotPassword from "./ForgotPassword";
-
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,8 +30,9 @@ export default function Login() {
     setPasswordVisible(!passwordVisible);
   };
   useEffect(() => {
+    console.log(role);
+    
     if (role) {
-
       if (role === "Student") {
         navigate("/");
       } else if (role === "Admin") {
@@ -42,12 +41,11 @@ export default function Login() {
         navigate("/tutor");
       }
     }
-  }, [role, navigate]);
+  }, [role]);
   // Xử lý khi đăng nhập thành công
   const onLoginSuccess = async (data) => {
     try {
       message.success("Đăng nhập thành công");
-
       localStorage.setItem(constants.ACCESS_TOKEN, data.accessToken);
       await dispatch(getUserRequest());
     } catch (error) {
@@ -55,18 +53,6 @@ export default function Login() {
       console.log(error, "error");
     }
   };
-
-  // Xử lý điều hướng khi `userRole` thay đổi và `isAuth` là true
-  //   useEffect(() => {
-  //     // if (isAuth && userRole) {
-  //     //   if (userRole === 'Admin') {
-  //     //     window.location.href = '/admin';
-  //     //   } else if (userRole === 'Customer') {
-  //     //     window.location.href = '/';
-  //     //   }
-  //     // }
-  //   }, [isAuth, userRole]);
-
   const handleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
@@ -202,10 +188,7 @@ export default function Login() {
                     name="remember"
                     className="mr-2"
                   />
-                  <label
-                    htmlFor="remember"
-                    className="text-sm text-gray-600"
-                  >
+                  <label htmlFor="remember" className="text-sm text-gray-600">
                     Remember me
                   </label>
                 </div>

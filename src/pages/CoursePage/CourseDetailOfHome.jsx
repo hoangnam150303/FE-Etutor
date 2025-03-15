@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { message, Popconfirm } from "antd";
 import courseApi from "../../hooks/courseApi";
@@ -6,7 +6,8 @@ import classApi from "../../hooks/classApi";
 
 const CourseDetailOfHome = () => {
   const { id } = useParams();
-  const [course, setCourse] = React.useState(null);
+  const [course, setCourse] = useState(null);
+  const [otherCourses, setOtherCourses] = useState([]);
   const navigate = useNavigate();
 
   const fetchDetailCourse = async () => {
@@ -18,9 +19,18 @@ const CourseDetailOfHome = () => {
       console.log(error);
     }
   };
+  const fetchOtherCourse = async () => {
+    try {
+      const response = await courseApi.getAllCourse("", "", "user");
+      setOtherCourses(response.data.courses); // Cập nhật state
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchDetailCourse();
+    fetchOtherCourse();
   }, [id]);
 
   const handleDetailClick = (courseId) => {
@@ -121,7 +131,24 @@ const CourseDetailOfHome = () => {
               <h1 className="text-xl font-semibold">Course other</h1>
               <div className="line h-0.5 w-full bg-slate-100 my-2 mx-auto"></div>
               <div className="list-course">
-                {/* You can fetch other courses dynamically if needed */}
+                {otherCourses.length > 0 ? (
+                  otherCourses
+                    .filter((otherCourse) => otherCourse._id !== course._id)
+                    .map((course) => (
+                      <div
+                        key={course._id}
+                        className="cursor-pointer p-2 border rounded-md mb-2 hover:bg-gray-100"
+                        onClick={() => handleDetailClick(course._id)}
+                      >
+                        <h2 className="text-lg font-medium">{course.name}</h2>
+                        <p className="text-sm text-gray-600">
+                          {course.description}
+                        </p>
+                      </div>
+                    ))
+                ) : (
+                  <p>No other courses available.</p>
+                )}
               </div>
             </div>
           </div>
