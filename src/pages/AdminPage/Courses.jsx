@@ -75,11 +75,14 @@ const Courses = () => {
     try {
       const response = await courseApi.getAllCourse(filter, search, "admin");
       setCourses(response.data.courses);
-    } catch (error) {}
+      console.log(response.data.courses);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const fetchTutors = async () => {
     try {
-      const tutors = await userApi.getAllUser("tutor","");
+      const tutors = await userApi.getAllUser("tutor", "");
       setTutors(tutors.data);
     } catch (error) {}
   };
@@ -209,7 +212,7 @@ const Courses = () => {
     name: course?.name,
     image: course?.image,
     description: course?.description,
-    tutors: course?.tutors,
+    tutors: course?.tutors.map((tutor) => tutor.username).join(", "),
     classes: course?.classes,
     timeStamps: course.createdAt,
   }));
