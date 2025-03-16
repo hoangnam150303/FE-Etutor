@@ -168,11 +168,6 @@ const InfoClassOfUser = () => {
                 <h2 className="text-xl font-semibold text-[#1890ff] ">
                   Class information
                 </h2>
-                <div className="flex justify-end">
-                  <Button type="primary" onClick={() => handleFinishClass()}>
-                    Finish Class
-                  </Button>
-                </div>
               </>
             }
             className="mb-5 shadow-md"

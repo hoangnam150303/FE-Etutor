@@ -22,7 +22,7 @@ import classApi from "../../hooks/classApi";
 
 const { Search } = Input;
 
-const UserBlog = () => {
+const TutorBlog = () => {
   const [blogs, setBlogs] = useState([]);
   const [courses, setCourses] = useState([]);
   const [classess, setClasses] = useState([]);
@@ -43,7 +43,7 @@ const UserBlog = () => {
     try {
       const courses = await courseApi.getAllCourse("", "", "user");
       setCourses(courses.data.courses);
-      const classes = await classApi.getClassByStudent();
+      const classes = await classApi.getClassByTutor();
       setClasses(classes.data.classValid);
     } catch (error) {
       console.error(error);
@@ -53,7 +53,7 @@ const UserBlog = () => {
   const navigate = useNavigate();
 
   const handleDetailClick = (id) => {
-    navigate(`/user/blog/${id}`);
+    navigate(`/tutor/blog/${id}`);
   };
 
   // Tạo Blog
@@ -370,4 +370,4 @@ const UserBlog = () => {
   );
 };
 
-export default UserBlog;
+export default TutorBlog;

@@ -53,12 +53,14 @@ const BlogDetail = () => {
               {blogSelected?.content}
             </p>
             <div>
-              <a
-                className="text-blue-500 font-semibold"
-                href={blogSelected?.file}
-              >
-                Click here to see file
-              </a>
+              {blogSelected.file ? (
+                <a
+                  className="text-blue-500 font-semibold"
+                  href={blogSelected?.file}
+                >
+                  Click here to see file
+                </a>
+              ) : null}
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-10">
                 Update
               </button>

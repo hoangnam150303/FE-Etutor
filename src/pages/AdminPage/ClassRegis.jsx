@@ -75,7 +75,6 @@ const ClassRegis = () => {
   };
   const handleAcceptClass = async (classId, tutorId) => {
     try {
-      console.log(11111);
 
       const response = await classApi.postAcceptClass(classId, tutorId);
       if (response.status === 200) {
