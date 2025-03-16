@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -38,7 +37,7 @@ const UserProfile = () => {
     try {
       const response = await userApi.getUserById(userId);
       setUser(response.data.user);
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
     dispatch(getUserRequest());
@@ -50,7 +49,7 @@ const UserProfile = () => {
   const showPasswordFields = async () => {
     try {
       setUpdatePassword(true);
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
     if ((isModalOpen && user) || (isModalAvatarOpen && user)) {
@@ -65,7 +64,6 @@ const UserProfile = () => {
       });
     }
   }, [isModalOpen, user]);
-
 
   const showModal = () => setIsModalOpen(true);
   const showModalAvatar = () => setIsModalAvatarOpen(true);
@@ -110,10 +108,6 @@ const UserProfile = () => {
             <h4 className="text-lg font-semibold">{user.username}</h4>
 
             <div className="mt-4 flex justify-center gap-3">
-
-              <Link to="/user/listClass">
-                <Button type="primary">List Class</Button>
-              </Link>
               <Link to="/user/chat">
                 <Button type="default">Message</Button>
               </Link>
@@ -121,7 +115,6 @@ const UserProfile = () => {
               <Button type="primary" onClick={showModalAvatar}>
                 Update Avatar
               </Button>
-
             </div>
           </Card>
         </div>
@@ -144,12 +137,13 @@ const UserProfile = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              <Button type="primary" className="" onClick={showModal}>Edit</Button>
+              <Button type="primary" className="" onClick={showModal}>
+                Edit
+              </Button>
             </div>
           </Card>
         </div>
       </div>
-
 
       {/* popup edit */}
 
@@ -159,7 +153,6 @@ const UserProfile = () => {
         onCancel={handleCancel}
         footer={null}
       >
-
         <div className="space-y-4">
           <div>
             <label className="block font-medium">Full Name</label>

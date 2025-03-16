@@ -25,12 +25,6 @@ const InfoOfClass = () => {
   const { className } = useParams();
   const id = useParams().id;
   const [classSelected, setClassSelected] = useState({});
-  const classInfo = {
-    studentName: "Nguyễn Văn A",
-    courseName: "ReactJS Basics",
-    startDate: "2024-01-10",
-    endDate: "2024-06-10",
-  };
   const fetchDetailClass = async () => {
     try {
       const response = await classApi.getClassById(id);
@@ -42,6 +36,7 @@ const InfoOfClass = () => {
   };
   useEffect(() => {
     fetchDetailClass();
+    console.log(classSelected);
   }, [id]);
 
   const handleFinishClass = async () => {
@@ -51,7 +46,9 @@ const InfoOfClass = () => {
         message.success("Successful!");
         fetchDetailClass();
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   // Tạo dataSource dựa trên documents và videos từ classSelected
   const dataSource = useMemo(() => {
@@ -198,8 +195,8 @@ const InfoOfClass = () => {
                 </p>
                 <p>
                   <strong className="text-gray-600">Start date:</strong>{" "}
-                  {classSelected.startdate
-                    ? classSelected.startdate.slice(0, 10)
+                  {classSelected.startDate
+                    ? classSelected.startDate.slice(0, 10)
                     : "No start date"}
                 </p>
                 <p>

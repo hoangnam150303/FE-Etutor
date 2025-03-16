@@ -10,6 +10,7 @@ import {
   HomeOutlined,
   IdcardOutlined,
   RightOutlined,
+  TeamOutlined,
   WechatOutlined,
 } from "@ant-design/icons";
 
@@ -36,6 +37,11 @@ const UserHeader = ({ onToggle, isOpen }) => {
       title: "Classes",
       icon: <BarsOutlined className="text-2xl" />,
       path: `/user/listClass`,
+    },
+    {
+      title: "Tutors",
+      icon: <TeamOutlined className="text-2xl" />,
+      path: `/user/list-tutors`,
     },
     {
       title: "Chat",

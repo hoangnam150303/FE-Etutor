@@ -1,3 +1,4 @@
+
 import { axiosClient } from "../ApiConfig/apiConfig";
 
 const userApi = {
@@ -46,7 +47,7 @@ const userApi = {
   },
 
   updateStatusUser: (id, data) => {
-    console.log(data);
+
 
     const url = `/updateStatusUser/${id}`;
     return axiosClient.put(url, data);
@@ -64,6 +65,25 @@ const userApi = {
         "Content-Type": "multipart/form-data",
       },
     });
+  },
+
+  forgotPassword:(email)=>{
+    const url = '/forgotPassword';
+    return axiosClient.post(url,email);
+  },
+
+  resetPassword:(data)=>{
+    const url = '/resetPassword';
+    return axiosClient.put(url,data);
+  },
+
+  getAllTutor: () => {
+    const url = "/getAllTutor";
+    return axiosClient.get(url);
+  },
+  getAllStudent: () => {
+    const url = "/getAllStudent";
+    return axiosClient.get(url);
   },
 };
 

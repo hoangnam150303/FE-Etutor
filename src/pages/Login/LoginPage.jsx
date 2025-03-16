@@ -30,11 +30,9 @@ export default function Login() {
     setPasswordVisible(!passwordVisible);
   };
   useEffect(() => {
-    console.log(role);
-    
     if (role) {
       if (role === "Student") {
-        navigate("/");
+        navigate("/user");
       } else if (role === "Admin") {
         navigate("/admin");
       } else {
@@ -192,6 +190,12 @@ export default function Login() {
                     Remember me
                   </label>
                 </div>
+                <Link
+                  to="/register"
+                  className="text-sm text-blue-500 hover:text-blue-800 transition duration-200"
+                >
+                  Register Account
+                </Link>
                 <Link
                   to="/forgot-password"
                   className="text-sm text-blue-500 hover:text-blue-800 transition duration-200"

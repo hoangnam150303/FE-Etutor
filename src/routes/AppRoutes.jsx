@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import UserLayout from "../layouts/UserLayout";
 import LoginPage from "../pages/Login/LoginPage";
 import OTPPage from "../pages/Register/OTPPage";
@@ -31,17 +31,40 @@ import CourseDetailOfHome from "../pages/CoursePage/CourseDetailOfHome";
 import ForgotPassword from "../pages/Login/ForgotPassword";
 import ResetPassword from "../pages/Login/ResetPassword";
 import TutorPage from "../pages/HomePage/TutorPage";
+import ListTutor from "../pages/UsersPage/ListTutor";
+import TutorBlog from "../pages/TutorPage/TutorBlog";
+import TutorBlogDetail from "../pages/TutorPage/TutorBlogDetail";
+import { useSelector } from "react-redux";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 
 function AppRoutes() {
+  const userId = useSelector((state) => state.user.id);
+  const userRole = useSelector((state) => state.user.role);
+  useEffect(() => {
+    console.log(userRole, userId);
+  }, [userRole, userId]);
   return (
     <Routes>
-      <Route path="/" element={<HomeLayout />} >
-        <Route path='' element={<HomePage />} />
-        <Route path="/courses" element={<CoursePage />} />
-        <Route path="/course/:id" element={<CourseDetailOfHome />} />
-        <Route path="/tutors" element={<TutorPage />} />
-        <Route path="/blogs" element={<BlogPage />} />
-        <Route path="/blog/:id" element={<BlogDetailOfHome />} />
+      <Route path="/" element={<HomeLayout />}>
+        <Route path="" element={<HomePage />} />
+        <Route
+          path="/courses"
+          element={userId ? <CoursePage /> : <LoginPage />}
+        />
+        <Route
+          path="/course/:id"
+          element={userId ? <CourseDetailOfHome /> : <LoginPage />}
+        />
+        <Route
+          path="/tutors"
+          element={userId ? <TutorPage /> : <LoginPage />}
+        />
+        <Route path="/blogs" element={userId ? <BlogPage /> : <LoginPage />} />
+        <Route
+          path="/blog/:id"
+          element={userId ? <BlogDetailOfHome /> : <LoginPage />}
+        />
+        <Route path="/NotFound" element={<NotFoundPage />}></Route>
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
@@ -50,30 +73,236 @@ function AppRoutes() {
       <Route path="/otp" element={<OTPPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/callPage" element={<CallPage />} />
-      <Route path="admin" element={<AdminLayout />}>
-        <Route path="user" element={<UserPage />} />
-        <Route path="courses" element={<Courses />} />
-        <Route path="class-registration" element={<ClassRegis />} />
-        <Route path="chat" element={<Chat />} />
-      </Route>
 
-      <Route path="user" element={<UserLayout />}>
-        <Route path="profile" element={<UserProfile />} />
-        <Route path="chat" element={<Chat />} />
-        <Route path="reset-password" element={<ResetPassword />} />
-        <Route path="blog" element={<UserBlog />} />
-        <Route path="blog/:id" element={<BlogDetail />} />
-        <Route path="listClass" element={<ListClassOfUser />} />
-        <Route path="detailClass/:id" element={<InfoClassOfUser />} />
-      </Route>
+      {userId ? (
+        <>
+          <Route
+            path="admin"
+            element={
+              userId && userRole === "Admin" ? (
+                <AdminLayout />
+              ) : (
+                <Navigate to="/NotFound" replace />
+              )
+            }
+          >
+            <Route
+              path="user"
+              element={
+                userId && userRole === "Admin" ? (
+                  <UserPage />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="courses"
+              element={
+                userId && userRole === "Admin" ? (
+                  <Courses />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="class-registration"
+              element={
+                userId && userRole === "Admin" ? (
+                  <ClassRegis />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="chat"
+              element={
+                userId && userRole === "Admin" ? (
+                  <Chat />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+          </Route>
 
-      <Route path="tutor" element={<TutorLayout />}>
-        <Route path="" element={<HomePageOfTutor />} />
-        <Route path="list-classes" element={<ListClass />} />
-        <Route path="detailClass/:id" element={<InfoOfClass />} />
-        <Route path="list-students" element={<ListStudents />} />
-        <Route path="tutorChat" element={<Chat />} />
-      </Route>
+          <Route
+            path="user"
+            element={
+              userId && userRole === "Student" ? (
+                <UserLayout />
+              ) : (
+                <Navigate to="/NotFound" replace />
+              )
+            }
+          >
+            <Route
+              path="profile"
+              element={
+                userId && userRole === "Student" ? (
+                  <UserProfile />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="chat"
+              element={
+                userId && userRole === "Student" ? (
+                  <Chat />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="reset-password"
+              element={
+                userId && userRole === "Student" ? (
+                  <ResetPassword />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="blog"
+              element={
+                userId && userRole === "Student" ? (
+                  <UserBlog />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="blog/:id"
+              element={
+                userId && userRole === "Student" ? (
+                  <BlogDetail />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="listClass"
+              element={
+                userId && userRole === "Student" ? (
+                  <ListClassOfUser />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="detailClass/:id"
+              element={
+                userId && userRole === "Student" ? (
+                  <InfoClassOfUser />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="list-tutors"
+              element={
+                userId && userRole === "Student" ? (
+                  <ListTutor />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            ></Route>
+          </Route>
+
+          <Route
+            path="tutor"
+            element={
+              userId && userRole === "Tutor" ? (
+                <TutorLayout />
+              ) : (
+                <Navigate to="/NotFound" replace />
+              )
+            }
+          >
+            <Route
+              path=""
+              element={
+                userId && userRole === "Tutor" ? (
+                  <HomePageOfTutor />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="list-classes"
+              element={
+                userId && userRole === "Tutor" ? (
+                  <ListClass />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="detailClass/:id"
+              element={
+                userId && userRole === "Tutor" ? (
+                  <InfoOfClass />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="list-students"
+              element={
+                userId && userRole === "Tutor" ? (
+                  <ListStudents />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="tutorChat"
+              element={
+                userId && userRole === "Tutor" ? (
+                  <Chat />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="blog"
+              element={
+                userId && userRole === "Tutor" ? (
+                  <TutorBlog />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+            <Route
+              path="blog/:id"
+              element={
+                userId && userRole === "Tutor" ? (
+                  <TutorBlogDetail />
+                ) : (
+                  <Navigate to="/NotFound" replace />
+                )
+              }
+            />
+          </Route>
+        </>
+      ) : null}
     </Routes>
   );
 }

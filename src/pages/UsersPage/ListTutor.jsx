@@ -3,12 +3,12 @@ import { Content } from "antd/es/layout/layout";
 import { Breadcrumb, Button, Table } from "antd";
 import userApi from "../../hooks/useUser";
 import { Link } from "react-router-dom";
-const ListStudents = () => {
-  const [students, setStudents] = useState([]);
+const ListTutor = () => {
+  const [tutors, setTutors] = useState([]);
   const fetchStudents = async () => {
     try {
-      const response = await userApi.getAllStudent();
-      setStudents(response.data.students);
+      const response = await userApi.getAllTutor();
+      setTutors(response.data.tutors);
     } catch (error) {
       console.log(error);
     }
@@ -46,10 +46,10 @@ const ListStudents = () => {
       ),
     },
   ];
-  const dataSource = students.map((student, i) => ({
+  const dataSource = tutors.map((tutor, i) => ({
     key: i,
-    name: student.username,
-    email: student.email,
+    name: tutor.username,
+    email: tutor.email,
   }));
 
   return (
@@ -76,4 +76,4 @@ const ListStudents = () => {
   );
 };
 
-export default ListStudents;
+export default ListTutor;

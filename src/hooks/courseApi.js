@@ -7,7 +7,7 @@ const courseApi = {
   },
 
   postCreateCourse: (data) => {
-    console.log(data);
+
 
     const url = `${URL_BASE}/createCourse`;
     return axiosClient.post(url, data, {

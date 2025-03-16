@@ -1,15 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 const HomeHeader = () => {
   const navigate = useNavigate();
-
+  const userId = useSelector((state) => state.user.id);
   const handleLogin = () => {
     navigate("/login");
   };
-
-  const handleRegister = () => {
-    navigate("/register");
+  const handleLogOut = () => {
+    localStorage.removeItem("access_token");
+    window.location.reload();
   };
 
   return (
@@ -62,18 +62,21 @@ const HomeHeader = () => {
         </nav>
 
         <div className="">
-          <button
-            className="bg-red-500 text-white px-4 py-2 mr-2"
-            onClick={handleRegister}
-          >
-            Register
-          </button>
-          <button
-            className="bg-red-500 text-white px-4 py-2"
-            onClick={handleLogin}
-          >
-            Login
-          </button>
+          {userId ? (
+            <button
+              className="bg-red-500 text-white px-4 py-2"
+              onClick={handleLogOut}
+            >
+              Log out
+            </button>
+          ) : (
+            <button
+              className="bg-red-500 text-white px-4 py-2"
+              onClick={handleLogin}
+            >
+              Login
+            </button>
+          )}
         </div>
       </div>
     </div>

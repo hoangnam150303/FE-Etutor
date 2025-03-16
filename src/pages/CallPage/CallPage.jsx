@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Input, Popconfirm, Select, Space } from "antd";
 import {
   AudioOutlined,
@@ -12,6 +12,7 @@ import classApi from "../../hooks/classApi";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserRequest } from "../../reducers/user";
 import { useNavigate } from "react-router-dom";
+import userApi from "../../hooks/useUser";
 export const CallPage = () => {
   const [me, setMe] = useState("");
   const [stream, setStream] = useState();
@@ -67,13 +68,13 @@ export const CallPage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        if (userRole === "Tutor") {
-          const response = await classApi.getClassByTutor();
+        if (userRole) {
+          const response =
+            userRole === "Tutor"
+              ? await userApi.getAllStudent()
+              : await userApi.getAllTutor();
 
-          setUsers(response.data.classValid);
-        } else if (userRole === "Student") {
-          const response = await classApi.getClassByStudent();
-          setUsers(response.data.classValid);
+          setUsers(response.data.students || response.data.tutors || []);
         }
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -243,27 +244,13 @@ export const CallPage = () => {
                 placeholder="Chọn người dùng"
                 onChange={handleSelectChange}
                 value={selectedUserId}
+                loading={!users.length} // Hiển thị loading khi dữ liệu chưa có
               >
-                {(() => {
-                  // Lấy danh sách các đối tượng tùy theo vai trò
-                  const options =
-                    userRole === "Student"
-                      ? users.map((classItem) => classItem.tutorId)
-                      : userRole === "Tutor"
-                      ? users.map((classItem) => classItem.studentId)
-                      : [];
-
-                  // Dùng Map để loại bỏ phần tử trùng lặp dựa trên _id
-                  const uniqueOptions = Array.from(
-                    new Map(options.map((opt) => [opt._id, opt])).values()
-                  );
-
-                  return uniqueOptions.map((opt) => (
-                    <Select.Option key={opt._id} value={opt._id}>
-                      {opt.username}
-                    </Select.Option>
-                  ));
-                })()}
+                {users.map((user) => (
+                  <Select.Option key={user._id} value={user._id}>
+                    {user.username}
+                  </Select.Option>
+                ))}
               </Select>
               <Button type="primary" onClick={handleSubmit}>
                 Gọi
