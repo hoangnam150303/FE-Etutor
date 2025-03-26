@@ -14,8 +14,6 @@ import {
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserRequest } from "../../reducers/user";
-import { io } from "socket.io-client"; // không cần thiết nữa nếu dùng SocketContext
-import callApi from "../../hooks/callApi";
 import { Link, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketContext"; // import hook từ SocketContext
 import chatApi from "../../hooks/chatApi";
@@ -26,10 +24,12 @@ const Chat = () => {
   const fileInputRef = useRef(null);
   const [selectedChat, setSelectedChat] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [chatList, setChatList] = useState([]);
   const [receiverId, setReceiverId] = useState(null);
   const [newMessage, setNewMessage] = useState("");
+  const [avtarHost, setAvtarHost] = useState(null);
+  const [avatarAnother, setAvatarAnother] = useState(null);
+  const [usernameAnother, setUsernameAnother] = useState(null);
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.id);
   // Sử dụng socket từ SocketContext (đã được khởi tạo toàn cục)
@@ -98,7 +98,6 @@ const Chat = () => {
   const fetchChatList = async () => {
     try {
       const response = await chatApi.getAllChat();
-
       setChatList(response.data);
     } catch (error) {
       console.error("Error fetching chat list:", error);
@@ -116,6 +115,17 @@ const Chat = () => {
   const openConversation = async (id) => {
     try {
       const response = await chatApi.getMessage(id);
+
+      response.data.forEach((message) => {
+        if (message.senderId._id === userId) {
+          setAvtarHost(message.senderId.avatar);
+        }
+        if (message.receiverId._id === id) {
+          setAvatarAnother(message.receiverId.avatar);
+          setUsernameAnother(message.receiverId.username);
+        }
+      });
+
       setReceiverId(id);
       setSelectedChat(response.data);
     } catch (error) {
@@ -219,9 +229,9 @@ const Chat = () => {
                   >
                     <MenuOutlined />
                   </button>
-                  <Avatar src="https://placehold.co/40x40" />
+                  <Avatar src={avatarAnother} />
                   <div className="ml-3">
-                    <div className="font-bold">{selectedChat.name}</div>
+                    <div className="font-bold">{usernameAnother}</div>
                     <div className="text-sm text-green-500">● Online</div>
                   </div>
                 </div>
@@ -238,24 +248,24 @@ const Chat = () => {
                   <div
                     key={index}
                     className={`flex items-center mb-4 ${
-                      msg.senderId === userId ? "justify-end" : "justify-start"
+                      msg.senderId._id === userId
+                        ? "justify-end"
+                        : "justify-start"
                     }`}
                   >
-                    {msg.senderId !== userId && (
-                      <Avatar src="https://placehold.co/40x40" />
+                    {msg.senderId._id !== userId && (
+                      <Avatar src={avatarAnother} />
                     )}
                     <div
                       className={`p-3 rounded-lg max-w-xs ${
-                        msg.senderId === userId
+                        msg.senderId._id === userId
                           ? "bg-blue-500 text-white ml-2"
                           : "bg-gray-200 mr-2"
                       }`}
                     >
                       {msg.message}
                     </div>
-                    {msg.senderId === userId && (
-                      <Avatar src="https://placehold.co/40x40" />
-                    )}
+                    {msg.senderId._id === userId && <Avatar src={avtarHost} />}
                   </div>
                 ))}
               </div>

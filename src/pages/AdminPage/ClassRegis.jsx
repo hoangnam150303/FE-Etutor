@@ -75,7 +75,6 @@ const ClassRegis = () => {
   };
   const handleAcceptClass = async (classId, tutorId) => {
     try {
-
       const response = await classApi.postAcceptClass(classId, tutorId);
       if (response.status === 200) {
         message.success("Accept successfully");
@@ -110,7 +109,7 @@ const ClassRegis = () => {
   };
   const handleCancelEdit = () => {
     setAcceptClass({});
-    setIsModalOpenAccept(false);
+    setIsModalOpenEdit(false);
   };
   const handleCancelAccept = () => {
     setAcceptClass({});
@@ -179,7 +178,7 @@ const ClassRegis = () => {
           {record.isAccepted ? (
             <button
               className="text-blue-500 px-4 py-1 rounded-md border border-blue-500 mb-2"
-              onClick={() => showModalAccept(record.key)}
+              onClick={() => showModalEdit(record.key)}
             >
               Update
             </button>
@@ -401,7 +400,7 @@ const ClassRegis = () => {
 
                   <div className="flex justify-end gap-2">
                     <Button
-                      onClick={handleCancelAccept}
+                      onClick={handleCancelEdit}
                       className="bg-gray-500 text-white px-4 py-2 rounded-md"
                     >
                       Cancel

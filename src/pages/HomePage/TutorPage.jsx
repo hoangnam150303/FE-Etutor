@@ -29,7 +29,9 @@ const TutorPage = () => {
   };
   const handleChat = async (id) => {
     try {
-      const response = await chatApi.sendMessage({ message: "" }, id);
+      const response = await chatApi.sendMessage({ message: " " }, id);
+      console.log(response);
+
       if (response.status === 200) {
         navigate("/user/chat");
       }

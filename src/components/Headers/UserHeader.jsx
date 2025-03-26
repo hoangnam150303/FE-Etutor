@@ -19,11 +19,6 @@ const UserHeader = ({ onToggle, isOpen }) => {
 
   const Menus = [
     {
-      title: "Home",
-      icon: <HomeOutlined className="text-2xl" />,
-      path: `/user`,
-    },
-    {
       title: "Profile",
       icon: <IdcardOutlined className="text-2xl" />,
       path: `/user/profile`,
@@ -60,7 +55,7 @@ const UserHeader = ({ onToggle, isOpen }) => {
   };
 
   return (
-    <div className="">
+    <div className="h-screen">
       <div
         className={`${
           isOpen ? "w-52" : "w-20"

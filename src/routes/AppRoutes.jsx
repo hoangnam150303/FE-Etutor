@@ -40,31 +40,35 @@ import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 function AppRoutes() {
   const userId = useSelector((state) => state.user.id);
   const userRole = useSelector((state) => state.user.role);
-  useEffect(() => {
-    console.log(userRole, userId);
-  }, [userRole, userId]);
   return (
     <Routes>
       <Route path="/" element={<HomeLayout />}>
         <Route path="" element={<HomePage />} />
-        <Route
-          path="/courses"
-          element={userId ? <CoursePage /> : <LoginPage />}
-        />
-        <Route
-          path="/course/:id"
-          element={userId ? <CourseDetailOfHome /> : <LoginPage />}
-        />
-        <Route
-          path="/tutors"
-          element={userId ? <TutorPage /> : <LoginPage />}
-        />
-        <Route path="/blogs" element={userId ? <BlogPage /> : <LoginPage />} />
-        <Route
-          path="/blog/:id"
-          element={userId ? <BlogDetailOfHome /> : <LoginPage />}
-        />
-        <Route path="/NotFound" element={<NotFoundPage />}></Route>
+        {userId ? (
+          <>
+            <Route
+              path="/courses"
+              element={userId ? <CoursePage /> : <LoginPage />}
+            />
+            <Route
+              path="/course/:id"
+              element={userId ? <CourseDetailOfHome /> : <LoginPage />}
+            />
+            <Route
+              path="/tutors"
+              element={userId ? <TutorPage /> : <LoginPage />}
+            />
+            <Route
+              path="/blogs"
+              element={userId ? <BlogPage /> : <LoginPage />}
+            />
+            <Route
+              path="/blog/:id"
+              element={userId ? <BlogDetailOfHome /> : <LoginPage />}
+            />
+            <Route path="/callPage" element={<CallPage />} />
+          </>
+        ) : null}
       </Route>
 
       <Route path="/login" element={<LoginPage />} />
@@ -72,8 +76,7 @@ function AppRoutes() {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/otp" element={<OTPPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/callPage" element={<CallPage />} />
-
+      <Route path="/NotFound" element={<NotFoundPage />}></Route>
       {userId ? (
         <>
           <Route

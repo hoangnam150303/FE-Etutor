@@ -10,6 +10,7 @@ const HomeHeader = () => {
   const handleLogOut = () => {
     localStorage.removeItem("access_token");
     window.location.reload();
+    window.location.href = "/";
   };
 
   return (
