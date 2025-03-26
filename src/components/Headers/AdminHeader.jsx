@@ -47,7 +47,7 @@ export default function AdminHeader({ onToggle, isOpen }) {
   };
 
   return (
-    <div className="">
+    <div className="h-screen">
       <div
         className={`${
           isOpen ? "w-52" : "w-20"

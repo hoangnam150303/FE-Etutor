@@ -32,11 +32,11 @@ export default function Login() {
   useEffect(() => {
     if (role) {
       if (role === "Student") {
-        navigate("/user");
+        navigate("/user/profile");
       } else if (role === "Admin") {
         navigate("/admin");
       } else {
-        navigate("/tutor");
+        navigate("/tutor/list-classes");
       }
     }
   }, [role]);
@@ -45,6 +45,7 @@ export default function Login() {
     try {
       message.success("Đăng nhập thành công");
       localStorage.setItem(constants.ACCESS_TOKEN, data.accessToken);
+      window.location.reload();
       await dispatch(getUserRequest());
     } catch (error) {
       message.error("Lỗi đăng nhập.");

@@ -53,12 +53,12 @@ const ListTutor = () => {
   }));
 
   return (
-    <div className="">
+    <div className="w-full">
       <Content className="mx-2 my-7 lg:mx-5">
         <Breadcrumb className="mb-2 lg:my-5 lg:mx-3 text-base ">
           <Breadcrumb.Item>Tutor</Breadcrumb.Item>
           <Breadcrumb.Item className="text-[#f18966] font-bold">
-            List Students 👋🏻
+            List Tutors 👋🏻
           </Breadcrumb.Item>
         </Breadcrumb>
         <div className="my-2">
