@@ -218,6 +218,8 @@ const UserPage = () => {
               }}
               validationSchema={validationSchema}
               onSubmit={async (values, { resetForm }) => {
+                console.log(values);
+                
                 const response = await userApi.postCreateTutor(values);
                 if (response.status === 200) {
                   console.log(response.data);
