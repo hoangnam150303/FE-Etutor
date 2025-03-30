@@ -30,11 +30,6 @@ export default function AdminHeader({ onToggle, isOpen }) {
       icon: <UnorderedListOutlined className="text-2xl" />,
       path: `/admin/class-registration`,
     },
-    {
-      title: "Chat",
-      icon: <WechatOutlined className="text-2xl" />,
-      path: `/admin/chat`,
-    },
   ];
 
   // Tablet - Mobile - Ipad

@@ -12,7 +12,7 @@ import {
   PaperClipOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUserRequest } from "../../reducers/user";
 import { Link, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketContext"; // import hook từ SocketContext
@@ -30,7 +30,6 @@ const Chat = () => {
   const [avtarHost, setAvtarHost] = useState(null);
   const [avatarAnother, setAvatarAnother] = useState(null);
   const [usernameAnother, setUsernameAnother] = useState(null);
-  const dispatch = useDispatch();
   const userId = useSelector((state) => state.user.id);
   // Sử dụng socket từ SocketContext (đã được khởi tạo toàn cục)
   const socket = useSocket();
@@ -47,8 +46,6 @@ const Chat = () => {
   );
 
   useEffect(() => {
-    dispatch(getUserRequest());
-
     // Lắng nghe các sự kiện socket
     if (socket) {
       socket.on("new-message", (msg) => {
@@ -64,7 +61,7 @@ const Chat = () => {
         socket.off("new-call");
       }
     };
-  }, [socket, dispatch]);
+  }, [socket]);
 
   // Hàm gửi tin nhắn
   const sendMessage = async () => {
@@ -73,13 +70,14 @@ const Chat = () => {
       // Gửi tin nhắn tới backend qua API
       await chatApi.sendMessage({ message }, receiverId);
 
-      // Cập nhật tin nhắn vào state
+      // Cập nhật tin nhắn vào state đúng bên
       const newMsg = {
-        senderId: userId,
-        receiverId: receiverId,
+        senderId: { _id: userId }, // Đảm bảo _id của senderId là userId hiện tại
+        receiverId: { _id: receiverId }, // Đảm bảo receiverId chính xác
         message: message,
         timestamp: new Date().toISOString(),
       };
+
       setSelectedChat((prevChat) => [...(prevChat || []), newMsg]);
 
       // Gửi tin nhắn qua socket
@@ -115,14 +113,20 @@ const Chat = () => {
   const openConversation = async (id) => {
     try {
       const response = await chatApi.getMessage(id);
+      console.log(response.data);
 
       response.data.forEach((message) => {
         if (message.senderId._id === userId) {
           setAvtarHost(message.senderId.avatar);
+        } else {
+          setAvtarHost(message.receiverId.avatar);
         }
         if (message.receiverId._id === id) {
           setAvatarAnother(message.receiverId.avatar);
           setUsernameAnother(message.receiverId.username);
+        } else {
+          setAvatarAnother(message.senderId.avatar);
+          setUsernameAnother(message.senderId.username);
         }
       });
 
@@ -241,7 +245,6 @@ const Chat = () => {
                   <BellOutlined />
                 </div>
               </div>
-
               {/* Chat Messages */}
               <div className="flex-1 p-4 overflow-y-auto">
                 {selectedChat.map((msg, index) => (
@@ -269,7 +272,6 @@ const Chat = () => {
                   </div>
                 ))}
               </div>
-
               {/* Chat Input */}
               <div className="p-4 border-t border-gray-300 flex items-center">
                 <AudioOutlined className="mr-3 text-gray-500" />
