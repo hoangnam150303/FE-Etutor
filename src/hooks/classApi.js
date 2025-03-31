@@ -10,8 +10,6 @@ const classApi = {
     return axiosClient.put(url);
   },
   updateClass: (classId, data) => {
-
-
     const url = `${URL_BASE}/updateClass/${classId}`;
     return axiosClient.put(url, data);
   },

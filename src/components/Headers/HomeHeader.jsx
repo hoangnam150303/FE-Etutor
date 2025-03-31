@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const HomeHeader = () => {
   const navigate = useNavigate();
   const userId = useSelector((state) => state.user.id);
+  const userRole = useSelector((state) => state.user.role);
   const handleLogin = () => {
     navigate("/login");
   };
@@ -63,18 +64,28 @@ const HomeHeader = () => {
         </nav>
 
         <div className="flex gap-4">
-
-          <button className="bg-blue-500 text-white px-4 py-2">
-            Student
-          </button>
-
-          {/* <button className="bg-blue-500 text-white px-4 py-2">
-            Tutor
-          </button> */}
-
-          {/* <button className="bg-blue-500 text-white px-4 py-2">
-            Admin
-          </button> */}
+          {userId && userRole === "Admin" ? (
+            <button
+              className="bg-blue-500 text-white px-4 py-2"
+              onClick={() => navigate("/admin")}
+            >
+              Admin
+            </button>
+          ) : userRole === "Tutor" ? (
+            <button
+              className="bg-blue-500 text-white px-4 py-2"
+              onClick={() => navigate("/tutor")}
+            >
+              Tutor
+            </button>
+          ) : userRole === "Student" ? (
+            <button
+              className="bg-blue-500 text-white px-4 py-2"
+              onClick={() => navigate("/user")}
+            >
+              Student
+            </button>
+          ) : null}
 
           {userId ? (
             <button

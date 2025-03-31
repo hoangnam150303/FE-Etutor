@@ -17,26 +17,47 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Item from "antd/es/list/Item";
 import { UploadOutlined } from "@ant-design/icons";
+import courseApi from "../../hooks/courseApi";
+import classApi from "../../hooks/classApi";
 
 const BlogDetail = () => {
   const { id } = useParams();
   const [blogSelected, setBlogSelected] = useState({});
+  const [initialValues, setInitialValues] = useState({
+    title: "",
+    content: "",
+    courseName: "",
+    className: "",
+    image: "",
+    file: "",
+  });
+  const fetchBlogDetail = async () => {
+    try {
+      const response = await blogApi.getBlogById(id);
 
+      setBlogSelected(response.data.blog);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const fetchBlogDetail = async () => {
-      try {
-        const response = await blogApi.getBlogById(id);
-        setBlogSelected(response.data.blog);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchBlogDetail();
-  }, []);
+  }, [id]);
 
   // Update Blog
   const [isModalOpenUpdateBlog, setIsModalOpenUpdateBlog] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [classes, setClasses] = useState([]);
   const showModalUpdateBlog = () => {
+    setInitialValues({
+      title: blogSelected.title || "",
+      content: blogSelected.content || "",
+      courseName: blogSelected.courseId._id || "",
+      classId: blogSelected.classId._id || "",
+      image: blogSelected.image || "",
+      file: blogSelected.file || "",
+    });
+    fetchCoursesandClasses();
     setIsModalOpenUpdateBlog(true);
   };
   const handleOkUpdateBlog = () => {
@@ -46,12 +67,15 @@ const BlogDetail = () => {
     setIsModalOpenUpdateBlog(false);
   };
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
+  const fetchCoursesandClasses = async () => {
+    try {
+      const courses = await courseApi.getAllCourse("", "", "user");
+      setCourses(courses.data.courses);
+      const classes = await classApi.getClassByStudent();
+      setClasses(classes.data.classValid);
+    } catch (error) {
+      console.error(error);
     }
-    return e?.fileList;
   };
 
   const validationSchema = Yup.object().shape({
@@ -65,11 +89,9 @@ const BlogDetail = () => {
     courseName: Yup.string()
       .min(1, "Vui lòng chọn ít nhất một khóa học")
       .required("Vui lòng chọn ít nhất một khóa học"),
-    className: Yup.string()
+    classId: Yup.string()
       .min(1, "Vui chọn ít nhất một lớp học")
       .required("Vui chọn ít nhất một lớp học"),
-    image: Yup.mixed().required("Vui lòng chọn hình anh"),
-    file: Yup.mixed().required("Vuiź chọn video"),
   });
 
   return (
@@ -113,26 +135,36 @@ const BlogDetail = () => {
                   Click here to see file
                 </a>
               ) : null}
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-10" onClick={showModalUpdateBlog}>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-10"
+                onClick={() => showModalUpdateBlog()}
+              >
                 Update
               </button>
             </div>
           </div>
 
           {/* Modal Update Blog */}
-          <Modal title="Update Blog" open={isModalOpenUpdateBlog} onOk={handleOkUpdateBlog} onCancel={handleCancelUpdateBlog} footer={null}>
+          <Modal
+            title="Update Blog"
+            open={isModalOpenUpdateBlog}
+            onOk={handleOkUpdateBlog}
+            onCancel={handleCancelUpdateBlog}
+            footer={null}
+          >
             <Formik
-              initialValues={{
-                title: "",
-                content: "",
-                courseName: "",
-                className: "",
-                image: [],
-                file: [],
-              }}
+              enableReinitialize
+              initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values) => {
+              onSubmit={async (values, { resetForm }) => {
                 console.log("Submitted values:", values);
+                const response = await blogApi.updateBlog(id, values);
+                if (response.status === 200) {
+                  message.success("Blog updated successfully");
+                  setIsModalOpenUpdateBlog(false);
+                  resetForm();
+                  fetchBlogDetail();
+                }
               }}
             >
               {({ setFieldValue, values, handleSubmit }) => (
@@ -161,101 +193,90 @@ const BlogDetail = () => {
                     <label className="font-bold">Course name</label>
                     <Field name="courseName">
                       {({ field, form }) => (
-                        <>
-                          <Select
-                            style={{ width: "100%" }}
-                          // onChange={(value) =>
-                          //   form.setFieldValue("courseName", value)
-                          // }
-                          // value={form.values.courseName}
-                          // options={courses.map((course) => ({
-                          //   label: course.name,
-                          //   value: course._id,
-                          // }))}
-                          />
-                          {/* {form.errors.courseName &&
-                        form.touched.courseName && (
-                          <div className="text-red-500 text-sm">
-                            {form.errors.courseName}
-                          </div>
-                        )} */}
-                        </>
+                        <Select
+                          style={{ width: "100%" }}
+                          value={values.courseName}
+                          options={(courses || []).map((course) => ({
+                            value: course._id,
+                            label: course.name,
+                          }))}
+                          onChange={(value) =>
+                            form.setFieldValue("courseName", value)
+                          }
+                        />
                       )}
                     </Field>
                   </div>
 
-                  {/* Class */}
                   <div>
                     <label className="font-bold">Class name</label>
-                    <Field name="className">
+                    <Field name="classId">
                       {({ field, form }) => (
-                        <>
-                          <Select
-                            style={{ width: "100%" }}
-                          // onChange={(value) =>
-                          //   form.setFieldValue("className", value)
-                          // }
-                          // value={form.values.className}
-                          // options={classess.map((cls) => ({
-                          //   label: cls.name,
-                          //   value: cls._id,
-                          // }))}
-                          />
-                          {/* {form.errors.className &&
-                        form.touched.className && (
-                          <div className="text-red-500 text-sm">
-                            {form.errors.className}
-                          </div>
-                        )} */}
-                        </>
+                        <Select
+                          style={{ width: "100%" }}
+                          value={values.classId}
+                          options={(classes || []).map((classs) => ({
+                            value: classs._id,
+                            label: classs.name,
+                          }))}
+                          onChange={(value) =>
+                            form.setFieldValue("classId", value)
+                          }
+                        />
                       )}
                     </Field>
                   </div>
 
-                  <div className="mb-3">
-                    <label htmlFor="Image Course">Image Course</label>
-                    <Item
-                      name="upload"
-                      label="Upload"
-                      valuePropName="image"
-                      getValueFromEvent={normFile}
+                  <div>
+                    <label className="font-bold">Image</label>
+                    <Upload
+                      beforeUpload={(file) => {
+                        setFieldValue("image", file);
+                        return false; // Ngăn Ant Design tự động upload
+                      }}
+                      showUploadList={false} // Không hiển thị danh sách file đã chọn
                     >
-                      <Upload
-                        name="image"
-                        listType="picture"
-                        beforeUpload={(file) => {
-                          setFieldValue("image", file);
-                          return false; // Ngăn chặn upload tự động
-                        }}
-                      >
-                        <Button icon={<UploadOutlined />}>
-                          Click to upload
-                        </Button>
-                      </Upload>
-                    </Item>
+                      <Button icon={<UploadOutlined />}>Upload Image</Button>
+                    </Upload>
+                    {values.image && (
+                      <img
+                        src={
+                          typeof values.image === "string"
+                            ? values.image
+                            : URL.createObjectURL(values.image)
+                        }
+                        alt="Preview"
+                        className="mt-2 max-w-full h-32 object-cover"
+                      />
+                    )}
+                    <ErrorMessage
+                      name="image"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
                   </div>
 
-                  <div className="mb-3">
-                    <label htmlFor="File">File</label>
-                    <Item
-                      name="upload"
-                      label="Upload"
-                      valuePropName="file"
-                      getValueFromEvent={normFile}
+                  <div>
+                    <label className="font-bold">File</label>
+                    <Upload
+                      beforeUpload={(file) => {
+                        setFieldValue("file", file);
+                        return false;
+                      }}
+                      showUploadList={false}
                     >
-                      <Upload
-                        name="file"
-                        listType="file"
-                        beforeUpload={(file) => {
-                          setFieldValue("file", file);
-                          return false; // Ngăn chặn upload tự động
-                        }}
-                      >
-                        <Button icon={<UploadOutlined />}>
-                          Click to upload
-                        </Button>
-                      </Upload>
-                    </Item>
+                      <Button icon={<UploadOutlined />}>Upload File</Button>
+                    </Upload>
+                    {values.file && (
+                      <p className="mt-2 text-sm">
+                        Selected file: {values.file.name}
+                      </p>
+                    )}
+                    <ErrorMessage
+                      name="file"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
                   </div>
 
                   <div className="flex justify-end">
