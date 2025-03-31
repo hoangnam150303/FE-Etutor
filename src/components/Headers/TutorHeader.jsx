@@ -3,6 +3,7 @@ import {
   BarsOutlined,
   FormOutlined,
   HomeOutlined,
+  LogoutOutlined,
   RightOutlined,
   TeamOutlined,
   WechatOutlined,
@@ -36,6 +37,11 @@ const TutorHeader = ({ onToggle, isOpen }) => {
       title: "Chat",
       icon: <WechatOutlined className="text-2xl" />,
       path: `/tutor/tutorChat`,
+    },
+    {
+      title: "Home Page",
+      icon: <LogoutOutlined className="text-2xl" />,
+      path: `/`,
     },
   ];
 

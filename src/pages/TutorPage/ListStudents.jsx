@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Content } from "antd/es/layout/layout";
 import { Breadcrumb, Button, Table } from "antd";
 import userApi from "../../hooks/useUser";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import chatApi from "../../hooks/chatApi";
 const ListStudents = () => {
   const [students, setStudents] = useState([]);
