@@ -9,6 +9,7 @@ import {
   FormOutlined,
   HomeOutlined,
   IdcardOutlined,
+  LogoutOutlined,
   RightOutlined,
   TeamOutlined,
   WechatOutlined,
@@ -42,6 +43,11 @@ const UserHeader = ({ onToggle, isOpen }) => {
       title: "Chat",
       icon: <WechatOutlined className="text-2xl" />,
       path: `/user/chat`,
+    },
+    {
+      title: "Home Page",
+      icon: <LogoutOutlined className="text-2xl" />,
+      path: `/`,
     },
   ];
 

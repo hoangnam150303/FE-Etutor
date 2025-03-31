@@ -1,6 +1,7 @@
 import {
   AlignLeftOutlined,
   BookOutlined,
+  LogoutOutlined,
   RightOutlined,
   UnorderedListOutlined,
   UserOutlined,
@@ -29,6 +30,11 @@ export default function AdminHeader({ onToggle, isOpen }) {
       title: "Class Registration",
       icon: <UnorderedListOutlined className="text-2xl" />,
       path: `/admin/class-registration`,
+    },
+    {
+      title: "Home Page",
+      icon: <LogoutOutlined className="text-2xl" />,
+      path: `/`,
     },
   ];
 

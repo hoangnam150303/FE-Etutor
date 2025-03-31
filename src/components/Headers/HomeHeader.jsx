@@ -62,7 +62,20 @@ const HomeHeader = () => {
           </a>
         </nav>
 
-        <div className="">
+        <div className="flex gap-4">
+
+          <button className="bg-blue-500 text-white px-4 py-2">
+            Student
+          </button>
+
+          {/* <button className="bg-blue-500 text-white px-4 py-2">
+            Tutor
+          </button> */}
+
+          {/* <button className="bg-blue-500 text-white px-4 py-2">
+            Admin
+          </button> */}
+
           {userId ? (
             <button
               className="bg-red-500 text-white px-4 py-2"
