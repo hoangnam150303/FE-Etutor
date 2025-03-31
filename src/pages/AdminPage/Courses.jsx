@@ -71,11 +71,10 @@ const Courses = () => {
   const handleChange = (value) => {
     setFilter(value);
   };
-  const fetchCourses = async (filter) => {
+  const fetchCourses = async () => {
     try {
       const response = await courseApi.getAllCourse(filter, search, "admin");
       setCourses(response.data.courses);
-      console.log(response.data.courses);
     } catch (error) {
       console.log(error);
     }
@@ -87,7 +86,7 @@ const Courses = () => {
     } catch (error) {}
   };
   useEffect(() => {
-    fetchCourses(filter);
+    fetchCourses();
   }, [filter]);
   // Add Course
   const showModalAdd = () => {
@@ -122,6 +121,7 @@ const Courses = () => {
     fetchTutors();
   };
   const handleCancelEdit = () => {
+    setCourseEdit({});
     setIsModalOpenEdit(false);
   };
 
@@ -139,7 +139,17 @@ const Courses = () => {
       setSubmitting(false);
     }
   };
-
+  const handleChangeStatusCourse = async (id) => {
+    try {
+      const response = await courseApi.activeOrDeactiveCourse(id);
+      if (response.status === 200) {
+        message.success("Success");
+        fetchCourses();
+      }
+    } catch (error) {
+      message.error("Failed");
+    }
+  };
   const columns = [
     {
       title: "Name Course",
@@ -192,16 +202,33 @@ const Courses = () => {
           >
             Edit
           </Button>
-          <Popconfirm
-            title="Delete course"
-            description="Are you sure to delete this course?"
-            onConfirm={() => confirm(record.key)}
-            onCancel={cancel}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button danger>Delete</Button>
-          </Popconfirm>
+          {record.isDeleted ? (
+            <Popconfirm
+              title="Delete course"
+              description="Are you sure to active this course?"
+              onConfirm={() => handleChangeStatusCourse(record.key)}
+              onCancel={cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button className="text-green-500 px-4 py-1 rounded-md border border-green-500 mb-2">
+                Active
+              </button>
+            </Popconfirm>
+          ) : (
+            <Popconfirm
+              title="Delete course"
+              description="Are you sure to inactive this course?"
+              onConfirm={() => handleChangeStatusCourse(record.key)}
+              onCancel={cancel}
+              okText="Yes"
+              cancelText="No"
+            >
+              <button className="text-red-500 px-4 py-1 rounded-md border border-red-500 mb-2">
+                Inactive
+              </button>
+            </Popconfirm>
+          )}
         </div>
       ),
     },
@@ -215,6 +242,7 @@ const Courses = () => {
     tutors: course?.tutors.map((tutor) => tutor.username).join(", "),
     classes: course?.classes,
     timeStamps: course.createdAt,
+    isDeleted: course?.isDeleted,
   }));
 
   const validationSchema = yup.object().shape({
@@ -394,11 +422,12 @@ const Courses = () => {
         footer={null}
       >
         <Formik
+          enableReinitialize={true}
           initialValues={{
             name: courseEdit.name || "",
             description: courseEdit?.description || "",
-            image: courseEdit?.image || "",
-            tutors: courseEdit?.tutors || [],
+            image: courseEdit.image || "",
+            tutors: courseEdit.tutors || [],
           }}
           validationSchema={validationSchema}
           onSubmit={handleEditCourse}
@@ -441,6 +470,7 @@ const Courses = () => {
                   getValueFromEvent={normFile}
                 >
                   <Upload
+                    key={courseEdit?.image} // Thay đổi key để force re-render
                     name="image"
                     listType="picture"
                     beforeUpload={(file) => {
@@ -468,11 +498,11 @@ const Courses = () => {
                 <Select
                   mode="multiple"
                   style={{ width: "100%" }}
-                  value={values.tutors.map(
-                    (tutor) =>
-                      // Nếu giá trị là tên, tìm ObjectId tương ứng; nếu là ObjectId, giữ nguyên
-                      tutors.find((t) => t.username === tutor)?._id || tutor
-                  )}
+                  value={values.tutors.map((tutor) => {
+                    return (
+                      tutors.find((t) => t._id === tutor._id)?._id || tutor
+                    );
+                  })}
                   onChange={(selectedValues) => {
                     // Nếu không thay đổi tutors, thì giữ nguyên giá trị cũ
                     const updatedTutors =
