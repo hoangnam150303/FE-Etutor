@@ -17,6 +17,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Item from "antd/es/list/Item";
 import { UploadOutlined } from "@ant-design/icons";
+import courseApi from "../../hooks/courseApi";
+import classApi from "../../hooks/classApi";
 
 const TutorBlogDetail = () => {
   const { id } = useParams();
@@ -29,32 +31,33 @@ const TutorBlogDetail = () => {
     image: "",
     file: "",
   });
-  useEffect(() => {
-    const fetchBlogDetail = async () => {
-      try {
-        const response = await blogApi.getBlogById(id);
+  const fetchBlogDetail = async () => {
+    try {
+      const response = await blogApi.getBlogById(id);
 
-        setBlogSelected(response.data.blog);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchBlogDetail();
-  }, []);
+      setBlogSelected(response.data.blog);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    console.log(blogSelected);
-  }, [blogSelected]);
+    fetchBlogDetail();
+  }, [id]);
+
   // Update Blog
   const [isModalOpenUpdateBlog, setIsModalOpenUpdateBlog] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [classes, setClasses] = useState([]);
   const showModalUpdateBlog = () => {
     setInitialValues({
       title: blogSelected.title || "",
       content: blogSelected.content || "",
-      courseName: blogSelected.courseId?.name || "",
-      className: blogSelected.classId?.name || "",
+      courseName: blogSelected.courseId._id || "",
+      classId: blogSelected.classId._id || "",
       image: blogSelected.image || "",
       file: blogSelected.file || "",
     });
+    fetchCoursesandClasses();
     setIsModalOpenUpdateBlog(true);
   };
   const handleOkUpdateBlog = () => {
@@ -64,12 +67,15 @@ const TutorBlogDetail = () => {
     setIsModalOpenUpdateBlog(false);
   };
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
+  const fetchCoursesandClasses = async () => {
+    try {
+      const courses = await courseApi.getAllCourse("", "", "user");
+      setCourses(courses.data.courses);
+      const classes = await classApi.getClassByTutor();
+      setClasses(classes.data.classValid);
+    } catch (error) {
+      console.error(error);
     }
-    return e?.fileList;
   };
 
   const validationSchema = Yup.object().shape({
@@ -83,11 +89,9 @@ const TutorBlogDetail = () => {
     courseName: Yup.string()
       .min(1, "Vui lòng chọn ít nhất một khóa học")
       .required("Vui lòng chọn ít nhất một khóa học"),
-    className: Yup.string()
+    classId: Yup.string()
       .min(1, "Vui chọn ít nhất một lớp học")
       .required("Vui chọn ít nhất một lớp học"),
-    image: Yup.mixed().required("Vui lòng chọn hình anh"),
-    file: Yup.mixed().required("Vuiź chọn video"),
   });
 
   return (
@@ -152,8 +156,15 @@ const TutorBlogDetail = () => {
               enableReinitialize
               initialValues={initialValues}
               validationSchema={validationSchema}
-              onSubmit={(values) => {
+              onSubmit={async (values, { resetForm }) => {
                 console.log("Submitted values:", values);
+                const response = await blogApi.updateBlog(id, values);
+                if (response.status === 200) {
+                  message.success("Blog updated successfully");
+                  setIsModalOpenUpdateBlog(false);
+                  resetForm();
+                  fetchBlogDetail();
+                }
               }}
             >
               {({ setFieldValue, values, handleSubmit }) => (
@@ -185,6 +196,10 @@ const TutorBlogDetail = () => {
                         <Select
                           style={{ width: "100%" }}
                           value={values.courseName}
+                          options={(courses || []).map((course) => ({
+                            value: course._id,
+                            label: course.name,
+                          }))}
                           onChange={(value) =>
                             form.setFieldValue("courseName", value)
                           }
@@ -195,17 +210,73 @@ const TutorBlogDetail = () => {
 
                   <div>
                     <label className="font-bold">Class name</label>
-                    <Field name="className">
+                    <Field name="classId">
                       {({ field, form }) => (
                         <Select
                           style={{ width: "100%" }}
-                          value={values.className}
+                          value={values.classId}
+                          options={(classes || []).map((classs) => ({
+                            value: classs._id,
+                            label: classs.name,
+                          }))}
                           onChange={(value) =>
-                            form.setFieldValue("className", value)
+                            form.setFieldValue("classId", value)
                           }
                         />
                       )}
                     </Field>
+                  </div>
+
+                  <div>
+                    <label className="font-bold">Image</label>
+                    <Upload
+                      beforeUpload={(file) => {
+                        setFieldValue("image", file);
+                        return false; // Ngăn Ant Design tự động upload
+                      }}
+                      showUploadList={false} // Không hiển thị danh sách file đã chọn
+                    >
+                      <Button icon={<UploadOutlined />}>Upload Image</Button>
+                    </Upload>
+                    {values.image && (
+                      <img
+                        src={
+                          typeof values.image === "string"
+                            ? values.image
+                            : URL.createObjectURL(values.image)
+                        }
+                        alt="Preview"
+                        className="mt-2 max-w-full h-32 object-cover"
+                      />
+                    )}
+                    <ErrorMessage
+                      name="image"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="font-bold">File</label>
+                    <Upload
+                      beforeUpload={(file) => {
+                        setFieldValue("file", file);
+                        return false;
+                      }}
+                      showUploadList={false}
+                    >
+                      <Button icon={<UploadOutlined />}>Upload File</Button>
+                    </Upload>
+                    {values.file && (
+                      <p className="mt-2 text-sm">
+                        Selected file: {values.file.name}
+                      </p>
+                    )}
+                    <ErrorMessage
+                      name="file"
+                      component="div"
+                      className="text-red-500 text-sm"
+                    />
                   </div>
 
                   <div className="flex justify-end">
@@ -217,6 +288,7 @@ const TutorBlogDetail = () => {
                       Update
                     </Button>
                   </div>
+                  
                 </Form>
               )}
             </Formik>
