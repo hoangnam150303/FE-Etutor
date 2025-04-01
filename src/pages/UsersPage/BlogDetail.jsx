@@ -77,7 +77,18 @@ const BlogDetail = () => {
       console.error(error);
     }
   };
-
+  const handleStatusBlog = async () => {
+    try {
+      const response = await blogApi.updateStatusBlog(blogSelected._id);
+      if (response.status === 200) {
+        message.success("Cập nhật trang thái blog thành công");
+        fetchBlogDetail();
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Cập nhật trang thái blog không thành công");
+    }
+  };
   const validationSchema = Yup.object().shape({
     title: Yup.string()
       .min(5, "Title phải có ít nhất 5 ký tự")
@@ -141,6 +152,21 @@ const BlogDetail = () => {
               >
                 Update
               </button>
+              {blogSelected.isActive ? (
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-10"
+                  onClick={() => handleStatusBlog()}
+                >
+                  Inactive
+                </button>
+              ) : (
+                <button
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-10"
+                  onClick={() => handleStatusBlog()}
+                >
+                  Active
+                </button>
+              )}
             </div>
           </div>
 

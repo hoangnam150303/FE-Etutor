@@ -35,7 +35,11 @@ const blogApi = {
         "Content-Type": "multipart/form-data",
       },
     });
-  }
+  },
+  updateStatusBlog:(id)=>{
+    const url = `${URL_BASE}/activeOrDeactive/${id}`;    
+    return axiosClient.put(url);
+  },
 };
 
 export default blogApi;
