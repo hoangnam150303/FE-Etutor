@@ -1,8 +1,7 @@
 // SocketContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserRequest } from "../reducers/user";
+import { useSelector } from "react-redux";
 
 const SocketContext = createContext();
 
@@ -11,10 +10,9 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const userId = useSelector((state) => state.user.id);
-  const dispatch = useDispatch();
+
 
   useEffect(() => {
-    dispatch(getUserRequest());
     if (userId && !socket) {
       const newSocket = io(import.meta.env.VITE_API_BASE_URL, {
         query: { userId },
@@ -25,7 +23,7 @@ export const SocketProvider = ({ children }) => {
     return () => {
       if (socket) socket.disconnect();
     };
-  }, [userId, socket, dispatch]);
+  }, [userId, socket]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
