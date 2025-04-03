@@ -13,7 +13,6 @@ import {
   SmileOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import { getUserRequest } from "../../reducers/user";
 import { Link, useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketContext"; // import hook từ SocketContext
 import chatApi from "../../hooks/chatApi";
@@ -33,7 +32,7 @@ const Chat = () => {
   const userId = useSelector((state) => state.user.id);
   // Sử dụng socket từ SocketContext (đã được khởi tạo toàn cục)
   const socket = useSocket();
-
+  const role = useSelector((state) => state.user.role);
   const emojiList = ["😀", "😂", "😍", "😎", "😢", "😡", "👍", "🎉"];
   const emojiMenu = (
     <Menu>
@@ -113,7 +112,6 @@ const Chat = () => {
   const openConversation = async (id) => {
     try {
       const response = await chatApi.getMessage(id);
-      console.log(response.data);
 
       response.data.forEach((message) => {
         if (message.senderId._id === userId) {
@@ -156,12 +154,11 @@ const Chat = () => {
     }
     return name;
   };
-
   return (
     <div className="flex flex-col h-screen">
       {/* Breadcrumb */}
       <Breadcrumb className="mb-2 lg:my-5 lg:mx-3 text-base">
-        <Breadcrumb.Item>Admin</Breadcrumb.Item>
+        <Breadcrumb.Item>{role}</Breadcrumb.Item>
         <Breadcrumb.Item className="text-[#f18966] font-bold">
           Chat 👋🏻
         </Breadcrumb.Item>
