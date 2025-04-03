@@ -1,5 +1,4 @@
 import React from "react";
-import questionImage from "../../assets/images/question-A.webp";
 import { Collapse } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
@@ -36,7 +35,7 @@ const Question = () => {
                 {/* Ảnh */}
                 <div className="w-full h-40 sm:h-50 md:h-60 lg:h-full overflow-hidden rounded-md mb-4">
                     <img
-                        src={questionImage}
+                        src="https://res.cloudinary.com/dnv7bjvth/image/upload/v1743668836/question-A_gzzree.webp"
                         alt="Tutor"
                         className="w-full h-full object-cover ease-in duration-300 hover:scale-110"
                     />

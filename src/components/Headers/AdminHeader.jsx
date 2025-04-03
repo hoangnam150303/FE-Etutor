@@ -5,16 +5,15 @@ import {
   RightOutlined,
   UnorderedListOutlined,
   UserOutlined,
-  WechatOutlined,
 } from "@ant-design/icons";
 import { Button, Drawer } from "antd";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
-
-import avatarDefault from "../../assets/images/AvatarDefault.png";
 
 export default function AdminHeader({ onToggle, isOpen }) {
   const location = useLocation();
+  const avatar = useSelector((state) => state.user.avatar);
   const Menus = [
     {
       title: "User",
@@ -57,7 +56,10 @@ export default function AdminHeader({ onToggle, isOpen }) {
         <div className="w-64 h-20">
           <div className="w-3/5 flex justify-between items-center mx-2">
             <img
-              src={avatarDefault}
+              src={
+                avatar ||
+                "https://res.cloudinary.com/dnv7bjvth/image/upload/v1743668834/AvatarDefault_f1sh7i.png"
+              }
               alt="Shop"
               className={`cursor-pointer duration-500 rounded-full w-16 h-16 my-2`}
             />
@@ -112,7 +114,10 @@ export default function AdminHeader({ onToggle, isOpen }) {
             <div className="w-64 h-20 mb-4">
               <div className="w-8/12 flex justify-center items-center mx-2">
                 <img
-                  src={avatarDefault}
+                  src={
+                    avatar ||
+                    "https://res.cloudinary.com/dnv7bjvth/image/upload/v1743668834/AvatarDefault_f1sh7i.png"
+                  }
                   alt=""
                   className={`cursor-pointer duration-500 rounded-full w-24 h-24 my-2`}
                 />
