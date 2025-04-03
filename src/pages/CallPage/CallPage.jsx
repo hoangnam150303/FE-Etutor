@@ -8,9 +8,7 @@ import {
 import { useSocket } from "../../context/SocketContext"; // Import hook từ SocketContext
 import Peer from "simple-peer";
 
-import classApi from "../../hooks/classApi";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserRequest } from "../../reducers/user";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import userApi from "../../hooks/useUser";
 export const CallPage = () => {
@@ -31,13 +29,11 @@ export const CallPage = () => {
   const userId = useSelector((state) => state.user.id);
   const username = useSelector((state) => state.user.username);
   const userRole = useSelector((state) => state.user.role);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isCameraOn, setIsCameraOn] = useState(true);
   const [isAudioOn, setIsAudioOn] = useState(true);
   useEffect(() => {
     try {
-      dispatch(getUserRequest());
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((stream) => {

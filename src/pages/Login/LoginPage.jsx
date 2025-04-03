@@ -39,13 +39,12 @@ export default function Login() {
         navigate("/tutor/list-classes");
       }
     }
-  }, [role]);
+  }, [role, navigate]);
   // Xử lý khi đăng nhập thành công
   const onLoginSuccess = async (data) => {
     try {
       message.success("Đăng nhập thành công");
       localStorage.setItem(constants.ACCESS_TOKEN, data.accessToken);
-      window.location.reload();
       await dispatch(getUserRequest());
     } catch (error) {
       message.error("Lỗi đăng nhập.");
