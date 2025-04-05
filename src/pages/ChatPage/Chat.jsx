@@ -86,6 +86,8 @@ const Chat = () => {
 
       setMessage("");
       setFile(null);
+      fetchChatList(); // Cập nhật danh sách chat sau khi gửi tin nhắn
+      openConversation(receiverId); // Mở lại cuộc trò chuyện để cập nhật
     } catch (error) {
       console.error("Error sending message:", error);
     }

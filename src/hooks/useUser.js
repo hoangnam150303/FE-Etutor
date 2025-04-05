@@ -32,8 +32,8 @@ const userApi = {
     const url = "/getUser";
     return axiosClient.get(url);
   },
-  getAllUser: (filter,search) => {
-    const url = `/getAllUser?filter=${filter}&search=${search}`;
+  getAllUser: (filter,search,typeUser) => {
+    const url = `/getAllUser?filter=${filter}&search=${search}&typeUser=${typeUser}`;
     return axiosClient.get(url);
   },
 
@@ -47,8 +47,6 @@ const userApi = {
   },
 
   updateStatusUser: (id, data) => {
-
-
     const url = `/updateStatusUser/${id}`;
     return axiosClient.put(url, data);
   },

@@ -97,12 +97,14 @@ const Courses = () => {
     setIsModalOpenAdd(false);
   };
 
-  const handleAddCourse = async (values, { setSubmitting }) => {
+  const handleAddCourse = async (values, { setSubmitting, resetForm }) => {
     try {
       const response = await courseApi.postCreateCourse(values);
       if (response.status === 200) {
         message.success("Course added successfully");
         setIsModalOpenAdd(false);
+        resetForm(); // Reset form fields after successful submission
+        fetchCourses();
       }
     } catch (error) {
       console.error("Error adding course:", error);
@@ -175,7 +177,7 @@ const Courses = () => {
       title: "Tutors",
       dataIndex: "tutors",
       key: "tutors",
-      width: 100,
+      width: 250,
     },
     {
       title: "Classes",

@@ -44,7 +44,9 @@ const Services = () => {
         KHÓA HỌC ĐƯỢC ĐÁNH GIÁ TỐT NHẤT TẠI ĐÀ NẴNG
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {courses.map((course) => (
+        {courses
+        .slice(0, 6)
+        .map((course) => (
           <Link to={`/course/${course._id}`}>
             <ServiceCard
               key={course._id}
