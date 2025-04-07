@@ -1,34 +1,35 @@
 import React, { useState } from "react";
 import { Carousel } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import News from "../../assets/images/News.webp";
 
 const posts = [
     {
-        image: "https://placehold.co/600x400",
+        image: News,
         date: "09/06/2020",
         title: "Danh sách các trường Tiểu học công lập ở Biên Hòa hiện nay",
         description: "Nhằm hỗ trợ quý phụ huynh trong việc lựa chọn trường lớp 1 cho con...",
     },
     {
-        image: "https://placehold.co/600x400",
+        image: News,
         date: "15/06/2020",
         title: "Top #10 trung tâm luyện thi đại học hàng đầu Biên Hòa 2024",
         description: "Kỳ thi đại học là một trong những cột mốc quan trọng nhất trong cuộc...",
     },
     {
-        image: "https://placehold.co/600x400",
+        image: News,
         date: "03/06/2024",
         title: "Tiêu chí để đánh giá trung tâm gia sư uy tín và chất lượng",
         description: "Việc lựa chọn trung tâm gia sư uy tín cho con là điều trăn trở...",
     },
     {
-        image: "https://placehold.co/600x400",
+        image: News,
         date: "10/07/2021",
         title: "Những điều cần biết khi chọn trường mầm non cho con",
         description: "Chọn trường mầm non cho con là một quyết định quan trọng của các bậc phụ huynh...",
     },
     {
-        image: "https://placehold.co/600x400",
+        image: News,
         date: "22/08/2022",
         title: "Lợi ích của việc học ngoại ngữ từ sớm",
         description: "Học ngoại ngữ từ sớm mang lại nhiều lợi ích cho trẻ em, giúp phát triển tư duy và kỹ năng giao tiếp...",
@@ -89,6 +90,22 @@ const Post = () => {
                         draggable
                         effect="scrollx"
                         className="transition-all duration-500 ease-in-out justify-center"
+                        responsive={
+                            [
+                                {
+                                    breakpoint: 1024,
+                                    settings: {
+                                        slidesToShow: 2,
+                                    },
+                                },
+                                {
+                                    breakpoint: 768,
+                                    settings: {
+                                        slidesToShow: 1,
+                                    },
+                                },
+                            ]
+                        }
                     >
                         {posts.map((post, index) => (
                             <div key={index} className="flex justify-center items-center">

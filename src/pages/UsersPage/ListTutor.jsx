@@ -37,7 +37,7 @@ const ListTutor = () => {
       width: 100,
       render: () => (
         <div className="">
-          <Link to={`/tutor/tutorChat`}>
+          <Link to={`/user/chat`}>
             <Button className="text-blue-500 px-4 py-1 rounded-md border border-blue-500 mb-2">
               Chat
             </Button>

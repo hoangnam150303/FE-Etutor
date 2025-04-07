@@ -58,7 +58,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className="text-center mt-10 text-sm">
-                Copyright 2010 © Trung Tâm Gia Sư Etutor - Biên Hòa
+                Copyright 2010 © Trung Tâm Gia Sư Etutor - Đà Nẵng
             </div>
         </footer>
     );

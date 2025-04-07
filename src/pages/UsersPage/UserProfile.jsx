@@ -37,7 +37,7 @@ const UserProfile = () => {
     try {
       const response = await userApi.getUserById(userId);
       setUser(response.data.user);
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     dispatch(getUserRequest());
@@ -49,7 +49,7 @@ const UserProfile = () => {
   const showPasswordFields = async () => {
     try {
       setUpdatePassword(true);
-    } catch (error) {}
+    } catch (error) { }
   };
   useEffect(() => {
     if ((isModalOpen && user) || (isModalAvatarOpen && user)) {
