@@ -23,7 +23,7 @@ const getUser = (user) => {
   };
 };
 
-const initialState = {role: ''};
+const initialState = {role: '', username: '',avatar:""};
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {

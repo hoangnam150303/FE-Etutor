@@ -28,6 +28,18 @@ const blogApi = {
     const url = `${URL_BASE}/likeBlog/${id}`;    
     return axiosClient.put(url);
   },
+  updateBlog:(id,data)=>{
+    const url = `${URL_BASE}/updateBlog/${id}`;    
+    return axiosClient.put(url,data,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+  updateStatusBlog:(id)=>{
+    const url = `${URL_BASE}/activeOrDeactive/${id}`;    
+    return axiosClient.put(url);
+  },
 };
 
 export default blogApi;

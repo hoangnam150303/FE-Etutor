@@ -26,8 +26,8 @@ const courseApi = {
     });
   },
 
-  postDeleteCourse: (id) => {
-    const url = `${URL_BASE}/deleteCourse/${id}`;
+  activeOrDeactiveCourse: (id) => {
+    const url = `${URL_BASE}/activeOrDeactive/${id}`;
     return axiosClient.put(url);
   },
 

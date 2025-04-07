@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Button, Input, Modal, Select, Table, Upload } from "antd";
+import { Breadcrumb, Button, Input, message, Modal, Select, Table, Upload } from "antd";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { Content } from "antd/es/layout/layout";
 import { UploadOutlined } from "@ant-design/icons";
-import Item from "antd/es/list/Item";
 import userApi from "../../hooks/useUser";
 const UserPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
-  const fetchUsers = async (filter) => {
-    const response = await userApi.getAllUser(filter,search);
+  const fetchUsers = async () => {
+    const response = await userApi.getAllUser(filter, search);
     setUsers(response.data);
   };
   const handleStatus = async (id, status) => {
@@ -22,7 +21,7 @@ const UserPage = () => {
     }
   };
   useEffect(() => {
-    fetchUsers(filter);
+    fetchUsers();
   }, [filter]);
   const handleChange = (value) => {
     setFilter(value);
@@ -220,7 +219,9 @@ const UserPage = () => {
               onSubmit={async (values, { resetForm }) => {
                 const response = await userApi.postCreateTutor(values);
                 if (response.status === 200) {
-                  console.log(response.data);
+                  message.success("Tutor created successfully");
+                  setIsModalOpen(false);
+                  fetchUsers();
                 }
                 setTimeout(() => {
                   resetForm();

@@ -11,14 +11,13 @@ import {
   message,
   Upload,
 } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUserRequest } from "../../reducers/user";
 import userApi from "../../hooks/useUser";
 import { UploadOutlined } from "@ant-design/icons";
 
 const UserProfile = () => {
   const userId = useSelector((state) => state.user.id);
-  const dispatch = useDispatch();
   const [user, setUser] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalAvatarOpen, setIsModalAvatarOpen] = useState(false);
@@ -40,11 +39,10 @@ const UserProfile = () => {
     } catch (error) { }
   };
   useEffect(() => {
-    dispatch(getUserRequest());
     if (userId) {
       fetchUser();
     }
-  }, [dispatch, userId]);
+  }, [ userId]);
   const navigate = useNavigate();
   const showPasswordFields = async () => {
     try {

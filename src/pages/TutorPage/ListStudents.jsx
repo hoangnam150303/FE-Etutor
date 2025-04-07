@@ -2,13 +2,26 @@ import React, { useEffect, useState } from "react";
 import { Content } from "antd/es/layout/layout";
 import { Breadcrumb, Button, Table } from "antd";
 import userApi from "../../hooks/useUser";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import chatApi from "../../hooks/chatApi";
 const ListStudents = () => {
   const [students, setStudents] = useState([]);
+  const navigate = useNavigate();
   const fetchStudents = async () => {
     try {
       const response = await userApi.getAllStudent();
       setStudents(response.data.students);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleChat = async (id) => {
+    try {
+      const response = await chatApi.sendMessage({ message: " " }, id);
+
+      if (response.status === 200) {
+        navigate("/user/chat");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -35,19 +48,21 @@ const ListStudents = () => {
       key: "operation",
       fixed: "right",
       width: 100,
-      render: () => (
+      render: (text, record) => (
         <div className="">
-          <Link to={`/tutor/tutorChat`}>
-            <Button className="text-blue-500 px-4 py-1 rounded-md border border-blue-500 mb-2">
-              Chat
-            </Button>
-          </Link>
+          <Button
+            className="text-blue-500 px-4 py-1 rounded-md border border-blue-500 mb-2"
+            onClick={() => handleChat(record._id)} // Truyền ID đúng cách
+          >
+            Chat
+          </Button>
         </div>
       ),
     },
   ];
   const dataSource = students.map((student, i) => ({
     key: i,
+    _id: student._id,
     name: student.username,
     email: student.email,
   }));
