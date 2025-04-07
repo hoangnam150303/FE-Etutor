@@ -19,7 +19,7 @@ const BlogDetailOfHome = () => {
     }
   };
 
-  const fetchOtherCouse = async () => {
+  const fetchOtherCourse = async () => {
     try {
       const response = await blogApi.getAllBlog("", "");
       setOtherBlogs(response.data.blogs);
@@ -29,19 +29,20 @@ const BlogDetailOfHome = () => {
   };
   useEffect(() => {
     fetchDetailBlog();
-    if (detailBlog) {
-      detailBlog.userLikeId.map((item) => {
-        if (item === userId) {
-          setIsLike(true);
-        }
-      });
-    }
-  }, [id, detailBlog, isLike]);
+  }, [id,isLike]);
+
   useEffect(() => {
-    fetchOtherCouse();
+    if (detailBlog && detailBlog.userLikeId) {
+      const isLiked = detailBlog.userLikeId.includes(userId);
+      setIsLike(isLiked);
+    }
+  }, [detailBlog, userId]);
+
+  useEffect(() => {
+    fetchOtherCourse();
   }, []);
-  const handleDetailClick = () => {
-    navigate(`/blog/1`);
+  const handleDetailClick = (id) => {
+    navigate(`/blog/${id}`);
   };
   const handleLike = async () => {
     try {
@@ -122,12 +123,16 @@ const BlogDetailOfHome = () => {
                           <h2 className="text-xl font-bold mb-1">
                             {blog.title}
                           </h2>
-                          <p className="text-gray-700">{blog.content}</p>
+                          <p className="text-gray-700">
+                            {blog.content.length > 100
+                              ? blog.content.slice(0, 100) + "..."
+                              : blog.content}
+                          </p>
                         </div>
                         <div className="flex justify-end">
                           <button
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-                            onClick={() => handleDetailClick()}
+                            onClick={() => handleDetailClick(blog._id)}
                           >
                             View
                           </button>

@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Breadcrumb, Button, Input, message, Modal, Select, Table, Upload } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Input,
+  message,
+  Modal,
+  Select,
+  Table,
+  Upload,
+} from "antd";
 import { Formik, Form as FormikForm, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { Content } from "antd/es/layout/layout";
@@ -11,7 +20,7 @@ const UserPage = () => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const fetchUsers = async () => {
-    const response = await userApi.getAllUser(filter, search);
+    const response = await userApi.getAllUser(filter, search, "Admin");
     setUsers(response.data);
   };
   const handleStatus = async (id, status) => {
@@ -191,11 +200,11 @@ const UserPage = () => {
                 label: "Tutor",
               },
               {
-                value: "block",
+                value: "isDeleted",
                 label: "Block",
               },
               {
-                value: "unBlock",
+                value: "isActive",
                 label: "Unblock",
               },
             ]}

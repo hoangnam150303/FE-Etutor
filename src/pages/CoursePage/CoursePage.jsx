@@ -10,9 +10,9 @@ const CoursePage = () => {
 
   const fetchCourses = async () => {
     try {
-      console.log(filter);
-
       const response = await courseApi.getAllCourse(filter, search, "user");
+      console.log(response.data.courses);
+
       setCourses(response.data.courses);
     } catch (error) {
       console.log(error);
@@ -69,9 +69,10 @@ const CoursePage = () => {
                     <p className="text-xs italic">
                       Tutors:{" "}
                       {card.tutors && card.tutors.length > 0
-                        ? card.tutors.join(", ")
+                        ? card.tutors.map((tutor) => tutor.username).join(", ")
                         : "No tutors available"}
                     </p>
+
                     <button
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                       onClick={() => handleDetailClick(card._id)}

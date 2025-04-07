@@ -44,7 +44,7 @@ const Tutors = () => {
         DANH SÁCH GIA SƯ HÀNG ĐẦU
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {tutors?.map((tutor) => (
+        {tutors.slice(0, 6).map((tutor) => (
           <TutorCard
             key={tutor?._id}
             name={tutor?.username}

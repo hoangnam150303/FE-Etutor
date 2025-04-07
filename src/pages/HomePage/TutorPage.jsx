@@ -12,7 +12,7 @@ const TutorPage = () => {
   const navigate = useNavigate();
   const fetchTutors = async () => {
     try {
-      const response = await userApi.getAllUser("tutor", searchTerm);
+      const response = await userApi.getAllUser("tutor", searchTerm, "user");
       setTutors(response.data);
     } catch (error) {
       console.log(error);
@@ -88,20 +88,28 @@ const TutorPage = () => {
                     {/* Hiển thị danh sách khóa học */}
                     <div className="flex flex-wrap items-baseline gap-2">
                       {tutorCourses.length > 0 ? (
-                        tutorCourses.map((course) => (
-                          <p
-                            key={course._id}
-                            className="text-gray-700 text-xs my-2 bg-slate-300 px-2 py-0.5 rounded-xl"
-                          >
-                            {course.name}
-                          </p>
-                        ))
+                        <>
+                          {tutorCourses.slice(0, 2).map((course) => (
+                            <p
+                              key={course._id}
+                              className="text-gray-700 text-xs my-2 bg-slate-300 px-2 py-0.5 rounded-xl"
+                            >
+                              {course.name}
+                            </p>
+                          ))}
+                          {tutorCourses.length > 2 && (
+                            <p className="text-gray-500 text-xs italic">
+                              ...and more
+                            </p>
+                          )}
+                        </>
                       ) : (
                         <p className="text-gray-500 text-xs italic">
-                          Chưa có khóa học
+                          No courses
                         </p>
                       )}
                     </div>
+
                     <Button
                       onClick={() => handleChat(tutor._id)}
                       type="primary"
