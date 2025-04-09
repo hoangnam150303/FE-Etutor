@@ -20,7 +20,7 @@ const ListStudents = () => {
       const response = await chatApi.sendMessage({ message: " " }, id);
 
       if (response.status === 200) {
-        navigate("/user/chat");
+        navigate("/tutor/tutorChat");
       }
     } catch (error) {
       console.log(error);

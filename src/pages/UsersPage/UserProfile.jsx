@@ -36,18 +36,18 @@ const UserProfile = () => {
     try {
       const response = await userApi.getUserById(userId);
       setUser(response.data.user);
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
     if (userId) {
       fetchUser();
     }
-  }, [ userId]);
+  }, [userId]);
   const navigate = useNavigate();
   const showPasswordFields = async () => {
     try {
       setUpdatePassword(true);
-    } catch (error) { }
+    } catch (error) {}
   };
   useEffect(() => {
     if ((isModalOpen && user) || (isModalAvatarOpen && user)) {
@@ -99,8 +99,11 @@ const UserProfile = () => {
             className="shadow-lg text-center p-6 h-4/5 md:h-4/5 xl:h-1/2 mt-20"
           >
             <img
-              src={user.avatar}
-              alt="Admin"
+              src={
+                user.avatar ||
+                "https://res.cloudinary.com/dnv7bjvth/image/upload/v1743668834/AvatarDefault_f1sh7i.png"
+              }
+              alt="Avatar"
               className="rounded-full w-32 mx-auto mb-4"
             />
             <h4 className="text-lg font-semibold">{user.username}</h4>
