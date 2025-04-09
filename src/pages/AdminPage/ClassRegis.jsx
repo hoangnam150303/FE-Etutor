@@ -104,7 +104,7 @@ const ClassRegis = () => {
     if (response.status === 200) {
       message.success("Update successfully");
       fetchClasses(filter, search);
-      setIsModalOpenAccept(false);
+      setIsModalOpenEdit(false);
     }
   };
   const handleCancelEdit = () => {

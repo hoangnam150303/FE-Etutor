@@ -34,7 +34,7 @@ export default function Login() {
       if (role === "Student") {
         navigate("/user/profile");
       } else if (role === "Admin") {
-        navigate("/admin");
+        navigate("/admin/user");
       } else {
         navigate("/tutor/list-classes");
       }
